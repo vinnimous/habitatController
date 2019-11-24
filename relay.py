@@ -21,7 +21,7 @@ def nightLight():
 
 
 while True: # Run forever
-    dayLight()
+    dayLight()  #test
     sleep(1)                  # Sleep for 1 second
     nightLight()
     sleep(1)                  # Sleep for 1 second
