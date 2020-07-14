@@ -4,28 +4,28 @@ import datetime
 import mapSun
 import schedule
 import time
+import dht22
 
 relay.setup()
-dawn, sunrise, noon, sunset, dusk = mapSun.current_times()
+mapSun.current_times()
 schedule.every().day.at("00:00").do(mapSun.new_day)
+
 while True:
     try:
-        if mapSun.need_to_update:
-            dawn, sunrise, noon, sunset, dusk = mapSun.current_times()
-            mapSun.need_to_update = False
-        else:
-            dawn = dawn
-            sunrise = sunrise
-            noon = noon
-            sunset = sunset
-            dusk = dusk
         now = datetime.datetime.now()
-        if now > sunrise:
+        if mapSun.need_to_update:
+            mapSun.current_times()
+            mapSun.need_to_update = False
+        if now > mapSun.sunrise:
             relay.dayLight()
-        elif now > sunset:
+            tod = "day"
+        elif now > mapSun.sunset:
             relay.nightLight()
+            tod = "night"
         else:
             print(errorMessages.E4)
+        dht22.control_heat(tod)
+        schedule.run_pending()
         time.sleep(10)
     except:
         print(errorMessages.E1)

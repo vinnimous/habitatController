@@ -1,9 +1,12 @@
 import RPi.GPIO as GPIO    # Import Raspberry Pi GPIO library
 
-dayLight = 11
-dayUVB = 13
-heater = 15
-nightLight = 15
+
+dayLight = 11 #17
+dayUVB = 13 #27
+heater = 15 #22
+nightLight = 15 #23
+
+
 
 def setup():
     GPIO.setwarnings(False)    # Ignore warning for now
@@ -31,3 +34,9 @@ def allOff():
     GPIO.output(dayUVB, GPIO.LOW)  # Turn off UVB light
     GPIO.output(heater, GPIO.LOW)  # Turn off heat
     GPIO.output(nightLight, GPIO.LOW)  # Turn off night light
+
+def heater_on():
+    GPIO.output(heater, GPIO.HIGH)
+
+def heater_off():
+    GPIO.output(heater, GPIO.LOW)
