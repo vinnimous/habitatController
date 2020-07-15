@@ -1,6 +1,6 @@
 import datetime
-from astral.sun import sun
 from astral import LocationInfo
+from astral.sun import sun
 
 need_to_update = True
 dawn = 0
