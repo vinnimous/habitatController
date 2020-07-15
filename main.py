@@ -1,10 +1,10 @@
-import relay
-import errorMessages
 import datetime
-import mapSun
-import schedule
 import time
+import schedule
 import dht22
+import errorMessages
+import mapSun
+import relay
 
 relay.setup()
 mapSun.current_times()

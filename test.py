@@ -1,11 +1,6 @@
 import datetime
-import sched
 import time
 import mapSun
-
-import schedule
-from astral.sun import sun
-from astral import LocationInfo
 
 mapSun.current_times()
 print("START")

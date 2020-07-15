@@ -1,7 +1,6 @@
 import datetime
-
-import Adafruit_DHT
 import time
+import Adafruit_DHT
 import errorMessages
 import mapSun
 import relay
