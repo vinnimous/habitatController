@@ -1,7 +1,6 @@
 import datetime
 import time
 import schedule
-import dht22
 import errorMessages
 import mapSun
 import relay
@@ -26,7 +25,6 @@ while True:
             tod = "night"
         else:
             print(errorMessages.E4)
-        # dht22.control_heat(tod)
         schedule.run_pending()
         time.sleep(10)
     except:
