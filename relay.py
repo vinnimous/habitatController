@@ -1,10 +1,10 @@
 import RPi.GPIO as GPIO    # Import Raspberry Pi GPIO library
 
 
-pin_light = 17
-pin_heater = 27
-pin_uvb = 22
-pin_night = 23
+pin_light = 11
+pin_heater = 13
+pin_uvb = 15
+pin_night = 16
 
 
 
