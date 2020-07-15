@@ -17,11 +17,11 @@ while True:
             mapSun.current_times()
             mapSun.need_to_update = False
         if (now > mapSun.sunrise) & (now < mapSun.sunset):
-            relay.dayLight()
+            relay.pin_light()
             relay.heater_on()
             tod = "day"
         elif now > mapSun.sunset:
-            relay.nightLight()
+            relay.pin_night()
             relay.heater_off()
             tod = "night"
         else:
