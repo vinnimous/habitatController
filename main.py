@@ -16,15 +16,17 @@ while True:
         if mapSun.need_to_update:
             mapSun.current_times()
             mapSun.need_to_update = False
-        if now > mapSun.sunrise:
+        if (now > mapSun.sunrise) & (now < mapSun.sunset):
             relay.dayLight()
+            relay.heater_on()
             tod = "day"
         elif now > mapSun.sunset:
             relay.nightLight()
+            relay.heater_off()
             tod = "night"
         else:
             print(errorMessages.E4)
-        dht22.control_heat(tod)
+        # dht22.control_heat(tod)
         schedule.run_pending()
         time.sleep(10)
     except:
