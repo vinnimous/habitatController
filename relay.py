@@ -1,10 +1,10 @@
 import RPi.GPIO as GPIO    # Import Raspberry Pi GPIO library
 
 
-dayLight = 11 #17
-dayUVB = 13 #27
-heater = 15 #22
-nightLight = 15 #23
+dayLight = 17
+heater = 27
+dayUVB = 22
+nightLight = 23
 
 
 
@@ -13,8 +13,8 @@ def setup():
     GPIO.setmode(GPIO.BOARD)   # Use physical pin numbering
     GPIO.setup(dayLight, GPIO.OUT, initial=GPIO.LOW)
     GPIO.setup(dayUVB, GPIO.OUT, initial=GPIO.LOW)
-    GPIO.setup(15, GPIO.OUT, initial=GPIO.LOW)
-    GPIO.setup(16, GPIO.OUT, initial=GPIO.LOW)
+    GPIO.setup(heater, GPIO.OUT, initial=GPIO.LOW)
+    GPIO.setup(nightLight, GPIO.OUT, initial=GPIO.LOW)
 
 def dayLight():
     GPIO.output(dayLight, GPIO.HIGH) # Turn on light bulb
