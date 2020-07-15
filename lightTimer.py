@@ -4,7 +4,6 @@ import datetime
 import mapSun
 import schedule
 import time
-import dht22
 
 relay.setup()
 mapSun.current_times()
@@ -18,13 +17,14 @@ while True:
             mapSun.need_to_update = False
         if now > mapSun.sunrise:
             relay.dayLight()
+            relay.heater_on()
             tod = "day"
         elif now > mapSun.sunset:
             relay.nightLight()
+            relay.heater_off()
             tod = "night"
         else:
             print(errorMessages.E4)
-        dht22.control_heat(tod)
         schedule.run_pending()
         time.sleep(10)
     except:
