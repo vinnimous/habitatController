@@ -19,12 +19,10 @@ while True:
             relay.pin_light()
             relay.heater_on()
             tod = "day"
-        elif now > mapSun.sunset:
+        else:
             relay.pin_night()
             relay.heater_off()
             tod = "night"
-        else:
-            print(errorMessages.E4)
         schedule.run_pending()
         time.sleep(10)
     except:
