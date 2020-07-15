@@ -1,7 +1,6 @@
 relay
 RPi.GPIO
 Adafruit_DHT
-time
 astral
 sun
 schedule
