@@ -5,11 +5,13 @@ import errorMessages
 import mapSun
 import relay
 
+run_for_ever = True
+
 relay.setup()
 mapSun.current_times()
 schedule.every().day.at("00:00").do(mapSun.new_day)
 
-while True:
+while run_for_ever:
     try:
         now = datetime.datetime.now()
         if mapSun.need_to_update:
