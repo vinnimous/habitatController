@@ -31,7 +31,7 @@ autum_season = "09-01"
 winter_season = "12-01"
 
 while True:
-    global h_hot, t_hot, h_cold, t_cold
+    # global h_hot, t_hot, h_cold, t_cold
     h_hot, t_hot = Adafruit_DHT.read_retry(hotSensor, hotPin)
     t_hot = t_hot * 9 / 5.0 + 32  # Convert to Fahrenheit
     h_cold, t_cold = Adafruit_DHT.read_retry(coldSensor, coldPin)
