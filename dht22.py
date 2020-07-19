@@ -6,10 +6,10 @@ import mapSun
 import relay
 
 hotSensor = Adafruit_DHT.DHT22
-hotPin = 4
+hotPin = 18
 
 coldSensor = Adafruit_DHT.DHT22
-coldPin = 6
+coldPin = 22
 
 h_hot = 0
 h_cold = 0

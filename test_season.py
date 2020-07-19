@@ -16,9 +16,9 @@ while True:
     if(now.strftime("%m-%d"))>winter_season:
         print("Winter")
     elif(now.strftime("%m-%d"))>autum_season:
-        print("autum!!")
+        print("Autum")
     elif(now.strftime("%m-%d"))>summer_season:
-        print("SUMMER!!!")
+        print("Summer")
     elif(now.strftime("%m-%d"))>spring_season:
         print("Spring")
     else:
