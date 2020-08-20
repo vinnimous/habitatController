@@ -1,16 +1,20 @@
 import RPi.GPIO as GPIO    # Import Raspberry Pi GPIO library
 
 
-pin_light = 11
-pin_heater = 13
-pin_uvb = 15
-pin_night = 16
+# pin_light = 11
+# pin_heater = 13
+# pin_uvb = 15
+# pin_night = 16
 
-
+pin_light = 0
+pin_heater = 2
+pin_uvb = 3
+pin_night = 4
 
 def setup():
     GPIO.setwarnings(False)    # Ignore warning for now
-    GPIO.setmode(GPIO.BOARD)   # Use physical pin numbering
+    # GPIO.setmode(GPIO.BOARD)   # Use physical pin numbering
+    GPIO.setmode(GPIO.BCM)  # Use BCM numbering
     GPIO.setup(pin_light, GPIO.OUT, initial=GPIO.HIGH)
     GPIO.setup(pin_uvb, GPIO.OUT, initial=GPIO.HIGH)
     GPIO.setup(pin_heater, GPIO.OUT, initial=GPIO.HIGH)

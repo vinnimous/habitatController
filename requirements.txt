@@ -2,7 +2,6 @@ RPi.GPIO
 adafruit-circuitpython-mcp9808
 adafruit-circuitpython-busdevice
 adafruit-blinka
-astral~=2.2
+astral
 sun
-schedule~=0.6.0
-relay~=0.0.8
+schedule
