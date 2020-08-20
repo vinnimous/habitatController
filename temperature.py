@@ -1,19 +1,17 @@
 import datetime
 import time
-import adafruit_mcp9808
-import busio
-import board
 import errorMessages
 import mapSun
 import relay
+import busio
+import adafruit_mcp9808
+import board
 
 
-# Do one reading
-with busio.I2C(board.SCL,board.SDA) as i2c:
-    t = adafruit_mcp9808.MCP9808(i2c)
+i2c_bus = busio.I2C(board.SCL, board.SDA)
+mcp = adafruit_mcp9808.MCP9808(i2c_bus)
 
-    # Finally, read the temperature property and print it out
-    print(t.temperature)
+
 
 h_hot = 0
 h_cold = 0
@@ -42,10 +40,7 @@ winter_season = "12-01"
 
 def check_temp():
     global h_hot, t_hot, h_cold, t_cold
-    h_hot, t_hot = Adafruit_DHT.read_retry(hotSensor, hotPin)
-    t_hot = t_hot * 9 / 5.0 + 32  # Convert to Fahrenheit
-    h_cold, t_cold = Adafruit_DHT.read_retry(coldSensor, coldPin)
-    t_cold = t_cold * 9 / 5.0 + 32  # Convert to Fahrenheit
+    t_hot = mcp.temperature * 9 / 5 + 32
     # if h_hot is not None and t_hot is not None:
     #     print("Temp={0:0.1f}*F  Humidity={1:0.1f}%".format(t_hot, h_hot))
     # else:
@@ -54,6 +49,7 @@ def check_temp():
     #     print("Temp={0:0.1f}*F  Humidity={1:0.1f}%".format(t_cold, h_cold))
     # else:
     #     print(errorMessages.E6)
+
 
 
 def control_heat(tod):
@@ -73,30 +69,41 @@ def control_heat(tod):
             check_temp()
             if t_hot < winter_day:
                 relay.heater_on()
+                temp_status(tod, season, t_hot, "On")
             else:
                 relay.heater_off()
-            time.sleep(5)
+                temp_status(tod, season, t_hot, "Off")
+            time.sleep(2)
     elif (tod == "day") & (season == autumn):
         while datetime.datetime.now() < mapSun.sunset:
             check_temp()
             if t_hot < autumn_day:
                 relay.heater_on()
+                temp_status(tod, season, t_hot, "On")
             else:
                 relay.heater_off()
-            time.sleep(5)
+                temp_status(tod, season, t_hot, "Off")
+            time.sleep(2)
     elif (tod == "day") & (season == summer):
         while datetime.datetime.now() < mapSun.sunset:
             check_temp()
             if t_hot < summer_day:
                 relay.heater_on()
+                temp_status(tod, season, t_hot, "On")
             else:
                 relay.heater_off()
-            time.sleep(5)
+                temp_status(tod, season, t_hot, "Off")
+            time.sleep(2)
     elif (tod == "day") & (season == spring):
         while datetime.datetime.now() < mapSun.sunset:
             check_temp()
             if t_hot < spring_day:
                 relay.heater_on()
+                temp_status(tod, season, t_hot, "On")
             else:
                 relay.heater_off()
-            time.sleep(5)
+                temp_status(tod, season, t_hot, "Off")
+            time.sleep(2)
+
+def temp_status(tod, season, t_hot, relay):
+    print("Season: " + season + " TimeOfDay: " + tod + " Temp: " + t_hot + "Heater: " + relay)

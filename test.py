@@ -1,9 +1,19 @@
-import adafruit_mcp9808
+import time
+import board
 import busio
-from adafruit_blinka import board
+import adafruit_mcp9808
 
-with busio.I2C(board.SCL,board.SDA) as i2c:
-    t = adafruit_mcp9808.MCP9808(i2c)
+i2c_bus = busio.I2C(board.SCL, board.SDA)
 
-    # Finally, read the temperature property and print it out
-    print(t.temperature)
+# To initialise using the default address:
+mcp = adafruit_mcp9808.MCP9808(i2c_bus)
+
+# To initialise using a specified address:
+# Necessary when, for example, connecting A0 to VDD to make address=0x19
+# mcp = adafruit_mcp9808.MCP9808(i2c_bus, address=0x19)
+
+
+while True:
+    tempF = mcp.temperature * 9 / 5 + 32
+    print("Temperature: {} F ".format(tempF))
+    time.sleep(2)
