@@ -11,8 +11,6 @@ import board
 i2c_bus = busio.I2C(board.SCL, board.SDA)
 mcp = adafruit_mcp9808.MCP9808(i2c_bus)
 
-
-
 h_hot = 0
 h_cold = 0
 t_hot = 0
@@ -41,16 +39,6 @@ winter_season = "12-01"
 def check_temp():
     global h_hot, t_hot, h_cold, t_cold
     t_hot = mcp.temperature * 9 / 5 + 32
-    # if h_hot is not None and t_hot is not None:
-    #     print("Temp={0:0.1f}*F  Humidity={1:0.1f}%".format(t_hot, h_hot))
-    # else:
-    #     print(errorMessages.E5)
-    # if h_cold is not None and t_cold is not None:
-    #     print("Temp={0:0.1f}*F  Humidity={1:0.1f}%".format(t_cold, h_cold))
-    # else:
-    #     print(errorMessages.E6)
-
-
 
 def control_heat(tod):
     if (datetime.datetime.now().strftime("%m-%d")) > winter_season:
@@ -106,4 +94,4 @@ def control_heat(tod):
             time.sleep(2)
 
 def temp_status(tod, season, t_hot, relay):
-    print("Season: " + season + " TimeOfDay: " + tod + " Temp: " + t_hot + "Heater: " + relay)
+    print("Season: {} TimeOfDay: {} Temp: {} Heater {}".format(tod, season, t_hot, relay))
