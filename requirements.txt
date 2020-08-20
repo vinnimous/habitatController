@@ -1,5 +1,7 @@
 RPi.GPIO
-Adafruit_DHT
-astral
+adafruit-circuitpython-mcp9808
+adafruit_mcp9808
+astral~=2.2
 sun
-schedule
+schedule~=0.6.0
+relay~=0.0.8

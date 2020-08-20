@@ -1,15 +1,19 @@
 import datetime
 import time
-import Adafruit_DHT
+import adafruit_mcp9808
+import busio
+import board
 import errorMessages
 import mapSun
 import relay
 
-hotSensor = Adafruit_DHT.DHT22
-hotPin = 18
 
-coldSensor = Adafruit_DHT.DHT22
-coldPin = 22
+# Do one reading
+with busio.I2C(board.SCL,board.SDA) as i2c:
+    t = adafruit_mcp9808.MCP9808(i2c)
+
+    # Finally, read the temperature property and print it out
+    print(t.temperature)
 
 h_hot = 0
 h_cold = 0

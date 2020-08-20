@@ -6,7 +6,7 @@ import schedule
 import errorMessages
 import mapSun
 import relay
-import dht22
+import temperature
 
 run_for_ever = True
 
@@ -28,7 +28,7 @@ while run_for_ever:
             relay.night_light()
             relay.heater_off()
             tod = "night"
-        dht22.control_heat(tod)
+        temperature.control_heat(tod)
         schedule.run_pending()
         time.sleep(10)
     except:
