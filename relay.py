@@ -5,6 +5,9 @@ import RPi.GPIO as GPIO    # Import Raspberry Pi GPIO library
 # pin_heater = 13
 # pin_uvb = 15
 # pin_night = 16
+import adafruit_mcp9808
+import busio
+import board
 
 pin_light = 0
 pin_heater = 2
@@ -19,6 +22,7 @@ def setup():
     GPIO.setup(pin_uvb, GPIO.OUT, initial=GPIO.HIGH)
     GPIO.setup(pin_heater, GPIO.OUT, initial=GPIO.HIGH)
     GPIO.setup(pin_night, GPIO.OUT, initial=GPIO.HIGH)
+
 
 def day_light():
     GPIO.output(pin_light, GPIO.LOW) # Turn on light bulb
