@@ -56,44 +56,44 @@ def control_heat(tod):
             check_temp()
             if t_hot < winter_day:
                 relay.heater_on()
-                temp_status(tod, season, t_hot, "On")
+                temp_status(season, tod, "On")
             else:
                 relay.heater_off()
-                temp_status(tod, season, t_hot, "Off")
+                temp_status(season, tod, "Off")
             time.sleep(2)
     elif (tod == "day") & (season == autumn):
         while datetime.datetime.now() < mapSun.sunset:
             check_temp()
             if t_hot < autumn_day:
                 relay.heater_on()
-                temp_status(tod, season, t_hot, "On")
+                temp_status(season, tod, "On")
             else:
                 relay.heater_off()
-                temp_status(tod, season, t_hot, "Off")
+                temp_status(season, tod, "Off")
             time.sleep(2)
     elif (tod == "day") & (season == summer):
         while datetime.datetime.now() < mapSun.sunset:
             check_temp()
             if t_hot < summer_day:
                 relay.heater_on()
-                temp_status(tod, season, t_hot, "On")
+                temp_status(season, tod, "On")
             else:
                 relay.heater_off()
-                temp_status(tod, season, t_hot, "Off")
+                temp_status(season, tod, "Off")
             time.sleep(2)
     elif (tod == "day") & (season == spring):
         while datetime.datetime.now() < mapSun.sunset:
             check_temp()
             if t_hot < spring_day:
                 relay.heater_on()
-                temp_status(tod, season, t_hot, "On")
+                temp_status(season, tod, "On")
             else:
                 relay.heater_off()
-                temp_status(tod, season, t_hot, "Off")
+                temp_status(season, tod, "Off")
             time.sleep(2)
     elif tod == "night":
-        print("Season: {} TimeOfDay: {} Temp: {} Heater {}".format(tod, season, t_hot, relay))
+        print("Season: {} TimeOfDay: {} Temp: {} Heater {}".format(season, tod, t_hot, "Off"))
 
 
-def temp_status(tod, season, t_hot, relay):
-    print("Season: {} TimeOfDay: {} Temp: {} Heater {}".format(tod, season, t_hot, relay))
+def temp_status(tod, season, relay_status):
+    print("Season: {} TimeOfDay: {} Temp: {} Heater {}".format(season, tod, t_hot, relay_status))
