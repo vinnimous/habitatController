@@ -7,6 +7,11 @@ import busio
 import adafruit_mcp9808
 import board
 
+h_hot = 0
+h_cold = 0
+t_hot = 0
+t_cold = 0
+
 spring = "spring"
 summer = "summer"
 autumn = "autumn"
@@ -29,10 +34,6 @@ winter_season = "12-01"
 
 def check_temp():
     global h_hot, t_hot, h_cold, t_cold
-    h_hot = 0
-    h_cold = 0
-    t_hot = 0
-    t_cold = 0
     i2c_bus = busio.I2C(board.SCL, board.SDA)
     mcp = adafruit_mcp9808.MCP9808(i2c_bus)
     t_hot = mcp.temperature * 9 / 5 + 32
