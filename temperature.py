@@ -36,7 +36,6 @@ def check_temp():
     global h_hot, t_hot, h_cold, t_cold
     i2c_bus = busio.I2C(board.SCL, board.SDA)
     mcp = adafruit_mcp9808.MCP9808(i2c_bus)
-    print(mcp.temperature * 9 / 5 + 32)
     t_hot = mcp.temperature * 9 / 5 + 32
 
 
@@ -93,7 +92,9 @@ def control_heat(tod):
                 temp_status(season, tod, "Off")
             time.sleep(2)
     elif tod == "night":
+        check_temp()
         temp_status(season, tod, "Off")
+        time.sleep(2)
 
 
 def temp_status(season, tod, relay_status):
