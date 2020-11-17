@@ -94,8 +94,8 @@ def control_heat(tod):
                 temp_status(season, tod, "Off")
             time.sleep(2)
     elif tod == "night":
-        check_temp()
         temp_status(season, tod, "Off")
+        check_temp()
         time.sleep(2)
 
 
