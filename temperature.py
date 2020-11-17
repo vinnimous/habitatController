@@ -91,6 +91,8 @@ def control_heat(tod):
                 relay.heater_off()
                 temp_status(tod, season, t_hot, "Off")
             time.sleep(2)
+    elif tod == "night":
+        print("Season: {} TimeOfDay: {} Temp: {} Heater {}".format(tod, season, t_hot, relay))
 
 
 def temp_status(tod, season, t_hot, relay):
