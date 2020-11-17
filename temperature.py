@@ -34,7 +34,9 @@ winter_season = "12-01"
 
 def check_temp():
     global h_hot, t_hot, h_cold, t_cold
+    print("trying to set i2c_bus")
     i2c_bus = busio.I2C(board.SCL, board.SDA)
+    print("trying to get temp")
     mcp = adafruit_mcp9808.MCP9808(i2c_bus)
     print("trying to check temp")
     print(mcp.temperature * 9 / 5 + 32)
