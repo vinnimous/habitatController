@@ -32,19 +32,15 @@ autumn_season = "09-01"
 winter_season = "12-01"
 
 
-# i2c_bus = busio.I2C(board.SCL, board.SDA)
-# mcp = adafruit_mcp9808.MCP9808(i2c_bus)
-
-
-def check_temp():
+def check_temp(mcp):
     global h_hot, t_hot, h_cold, t_cold
+    # global i2c_bus, mcp
     # i2c_bus = busio.I2C(board.SCL, board.SDA)
     # mcp = adafruit_mcp9808.MCP9808(i2c_bus)
     t_hot = mcp.temperature * 9 / 5 + 32
 
 
-def control_heat(tod):
-    global i2c_bus, mcp
+def control_heat(tod, mcp):
     if (datetime.datetime.now().strftime("%m-%d")) > winter_season:
         season = winter
     elif (datetime.datetime.now().strftime("%m-%d")) > autumn_season:
