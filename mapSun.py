@@ -14,6 +14,7 @@ def new_day():
     global need_to_update
     need_to_update = True
 
+
 def current_times():
     city = LocationInfo("Clayton", "North Carolina", "US/Eastern", 35.650711, -78.4563914)
     s = sun(city.observer, datetime.datetime.now(), tzinfo=city.timezone)
