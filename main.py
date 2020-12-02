@@ -15,7 +15,7 @@ import temperature
 logger = logging.getLogger('habitatController')
 logger.setLevel(logging.ERROR)
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-logHandler = handlers.RotatingFileHandler('errors.log', maxBytes=500, backupCount=2)
+logHandler = handlers.RotatingFileHandler('/tmp/habitatController.log', maxBytes=5242880, backupCount=2)
 logHandler.setFormatter(formatter)
 logger.addHandler(logHandler)
 
@@ -38,8 +38,8 @@ while run_for_ever:
             relay.night_light()
             relay.heater_off()
             tod = "night"
-        temperature.control_heat(tod)
+        temperature.control_heat()
         schedule.run_pending()
         time.sleep(10)
     except:
-        logger.error(errorMessages.E1)
+        logger.ERROR(errorMessages.E1)

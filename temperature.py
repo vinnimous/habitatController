@@ -15,6 +15,9 @@ h_cold = 0
 t_hot = 0
 t_cold = 0
 
+heater_status = "off"
+season = "unknown"
+
 spring = "spring"
 summer = "summer"
 autumn = "autumn"
@@ -60,46 +63,57 @@ def control_heat():
             check_temp()
             if t_hot < winter_day:
                 relay.heater_on()
-                temp_status(season, tod, "On")
+                temp_status()
             else:
                 relay.heater_off()
-                temp_status(season, tod, "Off")
+                temp_status()
             time.sleep(2)
     elif (tod == "day") & (season == autumn):
         while datetime.datetime.now() < mapSun.sunset:
             check_temp()
             if t_hot < autumn_day:
                 relay.heater_on()
-                temp_status(season, tod, "On")
+                temp_status()
             else:
                 relay.heater_off()
-                temp_status(season, tod, "Off")
+                temp_status()
             time.sleep(2)
     elif (tod == "day") & (season == summer):
         while datetime.datetime.now() < mapSun.sunset:
             check_temp()
             if t_hot < summer_day:
                 relay.heater_on()
-                temp_status(season, tod, "On")
+                temp_status()
             else:
                 relay.heater_off()
-                temp_status(season, tod, "Off")
+                temp_status()
             time.sleep(2)
     elif (tod == "day") & (season == spring):
         while datetime.datetime.now() < mapSun.sunset:
             check_temp()
             if t_hot < spring_day:
                 relay.heater_on()
-                temp_status(season, tod, "On")
+                temp_status()
             else:
                 relay.heater_off()
-                temp_status(season, tod, "Off")
+                temp_status()
             time.sleep(2)
     elif tod == "night":
-        temp_status(season, tod, "Off")
+        temp_status()
         check_temp()
         time.sleep(2)
 
 
-def temp_status(season, tod, relay_status):
-    logger.ERROR("Season: {} TimeOfDay: {} Temp: {} Heater {}".format(season, tod, t_hot, relay_status))
+def check_heater_relay():
+    try:
+        if (relay.GPIO.input(relay.pin_heater)):
+            heater_status = "off"
+        else:
+            heater_status = "on"
+    except:
+        logger.ERROR(errorMessages.E3)
+
+
+def temp_status():
+    check_heater_relay()
+    logger.INFO("Season: {} TimeOfDay: {} Temp: {} Heater {}".format(season, tod, t_hot, heater_status))
