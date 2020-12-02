@@ -5,7 +5,7 @@ import adafruit_mcp9808
 
 # i2c_bus = busio.I2C(board.SCL, board.SDA)
 
-# To initializ  e using the default address:
+# To initialize  e using the default address:
 # mcp = adafruit_mcp9808.MCP9808(i2c_bus)
 
 # To initialize using a specified address:
