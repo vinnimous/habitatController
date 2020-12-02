@@ -17,7 +17,6 @@ h_cold = 0
 t_hot = 0
 t_cold = 0
 
-tod = main.tod
 heater_status = "off"
 season = "unknown"
 
@@ -41,15 +40,7 @@ autumn_season = "09-01"
 winter_season = "12-01"
 
 
-def check_temp():
-    global h_hot, t_hot, h_cold, t_cold
-    try:
-        t_hot = adafruit_mcp9808.MCP9808(busio.I2C(board.SCL, board.SDA)).temperature * 9 / 5 + 32
-    except:
-        logger.error(errorMessages.E5)
-
-
-def control_heat():
+def control_heat(tod):
     logger.debug("checking seasons")
     if (datetime.datetime.now().strftime("%m-%d")) > winter_season:
         season = winter
@@ -104,12 +95,21 @@ def control_heat():
                 temp_status()
             time.sleep(2)
     elif tod == "night":
-        temp_status()
+        temp_status(tod)
         check_temp()
         time.sleep(2)
 
 
+def check_temp():
+    global h_hot, t_hot, h_cold, t_cold
+    try:
+        t_hot = adafruit_mcp9808.MCP9808(busio.I2C(board.SCL, board.SDA)).temperature * 9 / 5 + 32
+    except:
+        logger.error(errorMessages.E5)
+
+
 def check_heater_relay():
+    global heater_status
     try:
         if GPIO.input(relay.pin_heater):
             heater_status = "off"
@@ -119,6 +119,6 @@ def check_heater_relay():
         logger.error(errorMessages.E3)
 
 
-def temp_status():
+def temp_status(tod):
     check_heater_relay()
     logger.info("Season: {} TimeOfDay: {} Temp: {} Heater {}".format(season, tod, t_hot, heater_status))
