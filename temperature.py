@@ -36,15 +36,12 @@ def check_temp():
     global h_hot, t_hot, h_cold, t_cold
     # I might need to move this out
     # https://learn.adafruit.com/adafruit-mcp9808-precision-i2c-temperature-sensor-guide/python-circuitpython
-    print("checking")
     # i2c_bus = busio.I2C(board.SCL, board.SDA)
     # mcp = adafruit_mcp9808.MCP9808(i2c_bus)
     try:
         t_hot = adafruit_mcp9808.MCP9808(busio.I2C(board.SCL, board.SDA)).temperature * 9 / 5 + 32
     except:
         print(errorMessages.E5)
-    print(t_hot)
-
 
 def control_heat(tod):
     if (datetime.datetime.now().strftime("%m-%d")) > winter_season:
