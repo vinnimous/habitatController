@@ -91,9 +91,9 @@ def control_heat(tod):
                 temp_status()
             time.sleep(2)
     elif (tod == "night") & (season == winter):
-        print("Season: {} Sunset: {} Sunrise: {} CurrentTime: {}".format(season, mapSun.sunrise, mapSun.sunset,
+        print("Season: {} Sunset: {} Sunrise: {} CurrentTime: {}".format(season, mapSun.sunset, mapSun.sunrise,
                                                                          datetime.datetime.now()))
-        while datetime.datetime.now() > mapSun.sunset | datetime.datetime.now() < mapSun.sunrise:
+        while datetime.datetime.now() > mapSun.sunset or datetime.datetime.now() < mapSun.sunrise:
             check_temp()
             if t_hot < winter_night:
                 relay.heater_on()
@@ -103,7 +103,7 @@ def control_heat(tod):
                 temp_status()
             time.sleep(2)
     elif (tod == "night") & (season == autumn):
-        while datetime.datetime.now() > mapSun.sunset | datetime.datetime.now() < mapSun.sunrise:
+        while datetime.datetime.now() > mapSun.sunset or datetime.datetime.now() < mapSun.sunrise:
             check_temp()
             if t_hot < autumn_night:
                 relay.heater_on()
@@ -113,7 +113,7 @@ def control_heat(tod):
                 temp_status()
             time.sleep(2)
     elif (tod == "night") & (season == summer):
-        while datetime.datetime.now() > mapSun.sunset | datetime.datetime.now() < mapSun.sunrise:
+        while datetime.datetime.now() > mapSun.sunset or datetime.datetime.now() < mapSun.sunrise:
             check_temp()
             if t_hot < summer_night:
                 relay.heater_on()
@@ -123,7 +123,7 @@ def control_heat(tod):
                 temp_status()
             time.sleep(2)
     elif (tod == "night") & (season == spring):
-        while datetime.datetime.now() > mapSun.sunset | datetime.datetime.now() < mapSun.sunrise:
+        while datetime.datetime.now() > mapSun.sunset or datetime.datetime.now() < mapSun.sunrise:
             check_temp()
             if t_hot < spring_night:
                 relay.heater_on()
