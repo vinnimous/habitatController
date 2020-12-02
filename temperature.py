@@ -40,6 +40,7 @@ winter_season = "12-01"
 
 def control_heat(tod):
     print("checking seasons")
+    global season
     if (datetime.datetime.now().strftime("%m-%d")) > winter_season:
         season = winter
     elif (datetime.datetime.now().strftime("%m-%d")) > autumn_season:
