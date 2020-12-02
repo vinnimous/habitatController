@@ -15,7 +15,7 @@ import temperature
 logger = logging.getLogger('habitatController')
 logger.setLevel(logging.ERROR)
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-logHandler = handlers.RotatingFileHandler('/tmp/habitatController.log', maxBytes=5242880, backupCount=2)
+logHandler = handlers.RotatingFileHandler('/tmp/habitatController.log', maxBytes=500000, backupCount=2)
 logHandler.setFormatter(formatter)
 logger.addHandler(logHandler)
 
