@@ -39,7 +39,10 @@ def check_temp():
     print("checking")
     # i2c_bus = busio.I2C(board.SCL, board.SDA)
     # mcp = adafruit_mcp9808.MCP9808(i2c_bus)
-    t_hot = adafruit_mcp9808.MCP9808(busio.I2C(board.SCL, board.SDA)).temperature * 9 / 5 + 32
+    try:
+        t_hot = adafruit_mcp9808.MCP9808(busio.I2C(board.SCL, board.SDA)).temperature * 9 / 5 + 32
+    except:
+        print(errorMessages.E5)
     print(t_hot)
 
 
