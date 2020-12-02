@@ -6,11 +6,15 @@ import time
 import adafruit_mcp9808
 import board
 import busio
+import adafruit_mcp9808
 import schedule
 import errorMessages
 import mapSun
 import relay
 import temperature
+
+i2c_bus = busio.I2C(board.SCL, board.SDA)
+mcp = adafruit_mcp9808.MCP9808(i2c_bus)
 
 relay.setup()
 run_for_ever = True
@@ -31,7 +35,7 @@ while run_for_ever:
             relay.night_light()
             relay.heater_off()
             tod = "night"
-        temperature.control_heat(tod)
+        temperature.control_heat(tod, mcp)
         schedule.run_pending()
         time.sleep(10)
     except:
