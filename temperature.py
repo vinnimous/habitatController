@@ -4,6 +4,7 @@ import time
 import adafruit_mcp9808
 import board
 import busio
+import RPi.GPIO as GPIO
 
 import errorMessages
 import main
@@ -59,6 +60,7 @@ def control_heat():
         season = spring
     else:
         season = winter
+    logger.debug("Season: {}".format(season))
 
     if (tod == "day") & (season == winter):
         while datetime.datetime.now() < mapSun.sunset:
@@ -108,7 +110,7 @@ def control_heat():
 
 def check_heater_relay():
     try:
-        if (relay.GPIO.input(relay.pin_heater)):
+        if GPIO.input(relay.pin_heater):
             heater_status = "off"
         else:
             heater_status = "on"
