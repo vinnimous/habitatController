@@ -93,7 +93,7 @@ def control_heat(tod):
                 relay.heater_off()
                 temp_status(season, tod, "Off")
             time.sleep(2)
-    elif tod == "night":
+    elif tod == "I am lost":
         temp_status(season, tod, "Off")
         check_temp()
         time.sleep(2)
