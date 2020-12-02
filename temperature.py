@@ -95,6 +95,7 @@ def control_heat(tod):
             time.sleep(2)
     elif tod == "night":
         temp_status(tod)
+        relay.heater_on()
         check_temp()
         time.sleep(2)
 
