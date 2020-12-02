@@ -91,8 +91,9 @@ def control_heat(tod):
                 temp_status()
             time.sleep(2)
     elif (tod == "night") & (season == winter):
+        print("Season: {} Sunset: {} Sunrise: {} CurrentTime: {}".format(season, mapSun.sunrise, mapSun.sunset,
+                                                                         datetime.datetime.now()))
         while datetime.datetime.now() > mapSun.sunset | datetime.datetime.now() < mapSun.sunrise:
-            print("I am here")
             check_temp()
             if t_hot < winter_night:
                 relay.heater_on()
