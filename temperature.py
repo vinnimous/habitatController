@@ -7,10 +7,9 @@ import busio
 import RPi.GPIO as GPIO
 
 import errorMessages
-import main
 import mapSun
 import relay
-from main import logger, tod
+from main import logger
 
 h_hot = 0
 h_cold = 0
