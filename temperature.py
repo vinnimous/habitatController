@@ -41,7 +41,7 @@ winter_season = "12-01"
 
 
 def control_heat(tod):
-    logger.debug("checking seasons")
+    print("checking seasons")
     if (datetime.datetime.now().strftime("%m-%d")) > winter_season:
         season = winter
     elif (datetime.datetime.now().strftime("%m-%d")) > autumn_season:
@@ -52,7 +52,7 @@ def control_heat(tod):
         season = spring
     else:
         season = winter
-    logger.debug("Season: {}".format(season))
+    print("Season: {}".format(season))
 
     if (tod == "day") & (season == winter):
         while datetime.datetime.now() < mapSun.sunset:
