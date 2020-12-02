@@ -21,6 +21,7 @@ logger.addHandler(logHandler)
 
 relay.setup()
 run_for_ever = True
+tod = "day"
 mapSun.current_times()
 schedule.every().day.at("00:00").do(mapSun.new_day)
 
