@@ -54,6 +54,7 @@ def control_heat(tod):
         season = winter
 
     if (tod == "day") & (season == winter):
+        print("HERE")
         while datetime.datetime.now() < mapSun.sunset:
             check_temp()
             if t_hot < winter_day:
