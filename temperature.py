@@ -95,7 +95,7 @@ def control_heat(tod):
             check_temp()
             if t_hot < winter_night:
                 relay.heater_on()
-                temp_status()
+                temp_status(tod)
             else:
                 relay.heater_off()
                 temp_status()
@@ -135,6 +135,7 @@ def control_heat(tod):
 
 def check_temp():
     global h_hot, t_hot, h_cold, t_cold
+    print("checking temp")
     try:
         t_hot = adafruit_mcp9808.MCP9808(busio.I2C(board.SCL, board.SDA)).temperature * 9 / 5 + 32
     except:
