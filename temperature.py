@@ -7,9 +7,9 @@ import busio
 import RPi.GPIO as GPIO
 
 import errorMessages
+import main
 import mapSun
 import relay
-from main import logger
 
 h_hot = 0
 h_cold = 0
@@ -104,7 +104,7 @@ def check_temp():
     try:
         t_hot = adafruit_mcp9808.MCP9808(busio.I2C(board.SCL, board.SDA)).temperature * 9 / 5 + 32
     except:
-        logger.error(errorMessages.E5)
+        main.logger.error(errorMessages.E5)
 
 
 def check_heater_relay():
@@ -115,9 +115,9 @@ def check_heater_relay():
         else:
             heater_status = "on"
     except:
-        logger.error(errorMessages.E3)
+        main.logger.error(errorMessages.E3)
 
 
 def temp_status(tod):
     check_heater_relay()
-    logger.info("Season: {} TimeOfDay: {} Temp: {} Heater {}".format(season, tod, t_hot, heater_status))
+    main.logger.info("Season: {} TimeOfDay: {} Temp: {} Heater {}".format(season, tod, t_hot, heater_status))
