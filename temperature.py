@@ -50,6 +50,7 @@ def check_temp():
 
 
 def control_heat():
+    logger.debug("checking seasons")
     if (datetime.datetime.now().strftime("%m-%d")) > winter_season:
         season = winter
     elif (datetime.datetime.now().strftime("%m-%d")) > autumn_season:
