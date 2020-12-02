@@ -31,7 +31,7 @@ while run_for_ever:
             relay.night_light()
             relay.heater_off()
             tod = "night"
-        print(mapSun.sunset)
+        print(now)
         temperature.control_heat(tod)
         schedule.run_pending()
         time.sleep(10)
