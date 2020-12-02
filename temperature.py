@@ -17,6 +17,7 @@ t_hot = 0
 t_cold = 0
 
 tod = main.tod
+print(tod)
 
 heater_status = "off"
 season = "unknown"
