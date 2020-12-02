@@ -6,6 +6,7 @@ import board
 import busio
 
 import errorMessages
+import main
 import mapSun
 import relay
 from main import logger, tod
@@ -14,6 +15,8 @@ h_hot = 0
 h_cold = 0
 t_hot = 0
 t_cold = 0
+
+tod = main.tod
 
 heater_status = "off"
 season = "unknown"
