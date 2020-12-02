@@ -39,7 +39,7 @@ while run_for_ever:
             relay.night_light()
             relay.heater_off()
             tod = "night"
-        temperature.control_heat()
+        # temperature.control_heat()
         schedule.run_pending()
         time.sleep(10)
     except:
