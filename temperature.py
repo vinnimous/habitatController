@@ -17,8 +17,6 @@ t_hot = 0
 t_cold = 0
 
 tod = main.tod
-print(tod)
-
 heater_status = "off"
 season = "unknown"
 
@@ -47,7 +45,7 @@ def check_temp():
     try:
         t_hot = adafruit_mcp9808.MCP9808(busio.I2C(board.SCL, board.SDA)).temperature * 9 / 5 + 32
     except:
-        logger.ERROR(errorMessages.E5)
+        logger.error(errorMessages.E5)
 
 
 def control_heat():
@@ -115,9 +113,9 @@ def check_heater_relay():
         else:
             heater_status = "on"
     except:
-        logger.ERROR(errorMessages.E3)
+        logger.error(errorMessages.E3)
 
 
 def temp_status():
     check_heater_relay()
-    logger.INFO("Season: {} TimeOfDay: {} Temp: {} Heater {}".format(season, tod, t_hot, heater_status))
+    logger.info("Season: {} TimeOfDay: {} Temp: {} Heater {}".format(season, tod, t_hot, heater_status))

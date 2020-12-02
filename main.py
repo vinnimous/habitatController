@@ -42,4 +42,4 @@ while run_for_ever:
         schedule.run_pending()
         time.sleep(10)
     except:
-        logger.ERROR(errorMessages.E1)
+        logger.error(errorMessages.E1)
