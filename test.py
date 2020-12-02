@@ -1,7 +1,8 @@
 import time
+
+import adafruit_mcp9808
 import board
 import busio
-import adafruit_mcp9808
 
 # i2c_bus = busio.I2C(board.SCL, board.SDA)
 

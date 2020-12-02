@@ -1,4 +1,5 @@
 import datetime
+
 from astral import LocationInfo
 from astral.sun import sun
 

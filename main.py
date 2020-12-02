@@ -1,20 +1,24 @@
 #!/usr/bin/python3
 
 import datetime
+import logging
+import logging.handlers as handlers
 import time
 
-import adafruit_mcp9808
-import board
-import busio
-import adafruit_mcp9808
 import schedule
+
 import errorMessages
 import mapSun
 import relay
 import temperature
 
-# i2c_bus = busio.I2C(board.SCL, board.SDA)
-# mcp = adafruit_mcp9808.MCP9808(i2c_bus)
+logger = logging.getLogger('habitatController')
+logger.setLevel(logging.ERROR)
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+logHandler = handlers.RotatingFileHandler('errors.log', maxBytes=500, backupCount=2)
+logHandler.setFormatter(formatter)
+logger.addHandler(logHandler)
+
 relay.setup()
 run_for_ever = True
 mapSun.current_times()
@@ -38,4 +42,4 @@ while run_for_ever:
         schedule.run_pending()
         time.sleep(10)
     except:
-        print(errorMessages.E1)
+        logger.error(errorMessages.E1)
