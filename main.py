@@ -15,7 +15,9 @@ import temperature
 
 i2c_bus = busio.I2C(board.SCL, board.SDA)
 mcp = adafruit_mcp9808.MCP9808(i2c_bus)
-
+print("set")
+t_hot = mcp.temperature * 9 / 5 + 32
+print(t_hot)
 relay.setup()
 run_for_ever = True
 mapSun.current_times()
