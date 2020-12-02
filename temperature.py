@@ -32,17 +32,18 @@ autumn_season = "09-01"
 winter_season = "12-01"
 
 
-def check_temp(mcp):
+def check_temp():
     global h_hot, t_hot, h_cold, t_cold
     # I might need to move this out
     # https://learn.adafruit.com/adafruit-mcp9808-precision-i2c-temperature-sensor-guide/python-circuitpython
     print("checking")
-
-    t_hot = mcp.temperature * 9 / 5 + 32
+    # i2c_bus = busio.I2C(board.SCL, board.SDA)
+    # mcp = adafruit_mcp9808.MCP9808(i2c_bus)
+    t_hot = adafruit_mcp9808.MCP9808(busio.I2C(board.SCL, board.SDA)).temperature * 9 / 5 + 32
     print(t_hot)
 
 
-def control_heat(tod, mcp):
+def control_heat(tod):
     if (datetime.datetime.now().strftime("%m-%d")) > winter_season:
         season = winter
     elif (datetime.datetime.now().strftime("%m-%d")) > autumn_season:
@@ -56,7 +57,7 @@ def control_heat(tod, mcp):
 
     if (tod == "day") & (season == winter):
         while datetime.datetime.now() < mapSun.sunset:
-            check_temp(mcp)
+            check_temp()
             if t_hot < winter_day:
                 relay.heater_on()
                 temp_status(season, tod, "On")
