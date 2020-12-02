@@ -126,7 +126,7 @@ def control_heat(tod):
             print(t_hot)
             if t_hot < spring_night:
                 relay.heater_on()
-                temp_status()
+                temp_status(tod)
             else:
                 relay.heater_off()
                 temp_status()
