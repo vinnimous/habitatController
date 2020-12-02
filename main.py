@@ -33,11 +33,11 @@ while run_for_ever:
             mapSun.need_to_update = False
         if (now > mapSun.sunrise) & (now < mapSun.sunset):
             relay.day_light()
-            relay.heater_on()
+            # relay.heater_on()
             tod = "day"
         else:
             relay.night_light()
-            relay.heater_off()
+            # relay.heater_off()
             tod = "night"
         temperature.control_heat(tod)
         schedule.run_pending()

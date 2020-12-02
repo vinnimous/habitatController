@@ -39,7 +39,6 @@ winter_season = "12-01"
 
 
 def control_heat(tod):
-    print("checking seasons")
     global season
     if (datetime.datetime.now().strftime("%m-%d")) > winter_season:
         season = winter
@@ -51,8 +50,6 @@ def control_heat(tod):
         season = spring
     else:
         season = winter
-    print("Season: {}".format(season))
-
     if (tod == "day") & (season == winter):
         while datetime.datetime.now() < mapSun.sunset:
             check_temp()
@@ -93,11 +90,46 @@ def control_heat(tod):
                 relay.heater_off()
                 temp_status()
             time.sleep(2)
-    elif tod == "night":
-        temp_status(tod)
-        relay.heater_on()
-        check_temp()
-        time.sleep(2)
+    elif (tod == "night") & (season == winter):
+        while datetime.datetime.now() > mapSun.sunset | datetime.datetime.now() < mapSun.sunrise:
+            check_temp()
+            if t_hot < winter_night:
+                relay.heater_on()
+                temp_status()
+            else:
+                relay.heater_off()
+                temp_status()
+            time.sleep(2)
+    elif (tod == "night") & (season == autumn):
+        while datetime.datetime.now() > mapSun.sunset | datetime.datetime.now() < mapSun.sunrise:
+            check_temp()
+            if t_hot < autumn_night:
+                relay.heater_on()
+                temp_status()
+            else:
+                relay.heater_off()
+                temp_status()
+            time.sleep(2)
+    elif (tod == "night") & (season == summer):
+        while datetime.datetime.now() > mapSun.sunset | datetime.datetime.now() < mapSun.sunrise:
+            check_temp()
+            if t_hot < summer_night:
+                relay.heater_on()
+                temp_status()
+            else:
+                relay.heater_off()
+                temp_status()
+            time.sleep(2)
+    elif (tod == "night") & (season == spring):
+        while datetime.datetime.now() > mapSun.sunset | datetime.datetime.now() < mapSun.sunrise:
+            check_temp()
+            if t_hot < spring_night:
+                relay.heater_on()
+                temp_status()
+            else:
+                relay.heater_off()
+                temp_status()
+            time.sleep(2)
 
 
 def check_temp():
@@ -112,9 +144,9 @@ def check_heater_relay():
     global heater_status
     try:
         if GPIO.input(relay.pin_heater):
-            heater_status = "off"
-        else:
             heater_status = "on"
+        else:
+            heater_status = "off"
     except:
         print(errorMessages.E3)
 
