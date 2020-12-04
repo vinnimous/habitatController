@@ -154,4 +154,4 @@ def check_heater_relay():
 
 def temp_status(tod):
     check_heater_relay()
-    print("Season: {} TimeOfDay: {} Temp: {} Heater {}".format(season, tod, t_hot, heater_status))
+    # print("Season: {} TimeOfDay: {} Temp: {} Heater {}".format(season, tod, t_hot, heater_status))
