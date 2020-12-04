@@ -19,6 +19,8 @@ logHandler = handlers.RotatingFileHandler('/tmp/habitatController.log', maxBytes
 logHandler.setFormatter(formatter)
 logger.addHandler(logHandler)
 
+run_for_ever = True
+
 relay.setup()
 run_for_ever = True
 tod = "day"
