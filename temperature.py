@@ -28,10 +28,10 @@ summer = "summer"
 autumn = "autumn"
 winter = "winter"
 
-spring_day = 99
-summer_day = 103
-autumn_day = 99
-winter_day = 98
+spring_day = 102
+summer_day = 105
+autumn_day = 102
+winter_day = 100
 spring_night = 79
 summer_night = 80
 autumn_night = 79
