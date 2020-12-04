@@ -63,6 +63,8 @@ def control_heat(tod):
             if t_hot < winter_day:
                 relay.heater_on()
                 temp_status(tod, winter_day)
+            elif t_hot < winter_day + 2:
+                temp_status(tod, winter_day)
             else:
                 relay.heater_off()
                 temp_status(tod, winter_day)
@@ -72,6 +74,8 @@ def control_heat(tod):
             check_temp()
             if t_hot < autumn_day:
                 relay.heater_on()
+                temp_status(tod, autumn_day)
+            elif t_hot < autumn_day + 2:
                 temp_status(tod, autumn_day)
             else:
                 relay.heater_off()
@@ -83,6 +87,8 @@ def control_heat(tod):
             if t_hot < summer_day:
                 relay.heater_on()
                 temp_status(tod, summer_day)
+            elif t_hot < summer_day + 2:
+                temp_status(tod, summer_day)
             else:
                 relay.heater_off()
                 temp_status(tod, summer_day)
@@ -92,6 +98,8 @@ def control_heat(tod):
             check_temp()
             if t_hot < spring_day:
                 relay.heater_on()
+                temp_status(tod, spring_day)
+            elif t_hot < spring_day + 2:
                 temp_status(tod, spring_day)
             else:
                 relay.heater_off()
@@ -103,6 +111,8 @@ def control_heat(tod):
             if t_hot < winter_night:
                 relay.heater_on()
                 temp_status(tod, winter_night)
+            elif t_hot < winter_night + 2:
+                temp_status(tod, winter_night)
             else:
                 relay.heater_off()
                 temp_status(tod, winter_night)
@@ -112,6 +122,8 @@ def control_heat(tod):
             check_temp()
             if t_hot < autumn_night:
                 relay.heater_on()
+                temp_status(tod, autumn_night)
+            elif t_hot < autumn_night + 2:
                 temp_status(tod, autumn_night)
             else:
                 relay.heater_off()
@@ -123,6 +135,8 @@ def control_heat(tod):
             if t_hot < summer_night:
                 relay.heater_on()
                 temp_status(tod, summer_night)
+            elif t_hot < summer_night + 2:
+                temp_status(tod, summer_night)
             else:
                 relay.heater_off()
                 temp_status(tod, summer_night)
@@ -133,6 +147,8 @@ def control_heat(tod):
             print(t_hot)
             if t_hot < spring_night:
                 relay.heater_on()
+                temp_status(tod, spring_night)
+            elif t_hot < spring_night + 2:
                 temp_status(tod, spring_night)
             else:
                 relay.heater_off()
