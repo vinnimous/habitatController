@@ -1,4 +1,5 @@
 import datetime
+
 from astral import LocationInfo
 from astral.sun import sun
 
@@ -13,6 +14,7 @@ dusk = 0
 def new_day():
     global need_to_update
     need_to_update = True
+
 
 def current_times():
     city = LocationInfo("Clayton", "North Carolina", "US/Eastern", 35.650711, -78.4563914)
