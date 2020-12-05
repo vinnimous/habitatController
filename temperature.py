@@ -41,7 +41,7 @@ summer_night = 80
 autumn_night = 79
 winter_night = 79
 fail_safe = 75
-temp_set = 75
+temp_set = fail_safe
 
 spring_season = "03-01"
 summer_season = "06-01"
@@ -68,51 +68,44 @@ def control_heat(tod):
         temp_set = winter_day
         while now < mapSun.sunset:
             check_temp()
-            control_elements(tod)
+            control_elements()
     elif (tod == "day") & (season == autumn):
         temp_set = autumn_day
         while now < mapSun.sunset:
-            control_elements(tod)
+            control_elements()
     elif (tod == "day") & (season == summer):
         while now < mapSun.sunset:
-            control_elements(tod)
+            control_elements()
     elif (tod == "day") & (season == spring):
         while now < mapSun.sunset:
-            control_elements(tod)
+            control_elements()
     elif (tod == "night") & (season == winter):
         while now > mapSun.sunset or now < mapSun.sunrise:
-            control_elements(tod)
+            control_elements()
     elif (tod == "night") & (season == autumn):
         while now > mapSun.sunset or now < mapSun.sunrise:
-            control_elements(tod)
+            control_elements()
     elif (tod == "night") & (season == summer):
         while now > mapSun.sunset or now < mapSun.sunrise:
-            control_elements(tod)
+            control_elements()
     elif (tod == "night") & (season == spring):
         while now > mapSun.sunset or now < mapSun.sunrise:
-            control_elements(tod)
+            control_elements()
 
 
-def control_elements(tod):
+def control_elements():
     check_temp()
-    print(t_hot)
-    print(cycle)
-    print(str(fail_safe))
     if t_hot < fail_safe:
-        print("failsafe temp is " + str(t_hot) + " set to " + str(temp_set))
         relay.emergency_heat()
-        temp_status(tod)
+        temp_status()
     elif t_hot < temp_set:
-        print("heating" + " set to " + str(temp_set))
         relay.heater_on()
-        temp_status(tod)
+        temp_status()
     elif t_hot < temp_set + 1:
-        print("still heating" + " set to " + str(temp_set))
-        temp_status(tod)
+        temp_status()
     else:
-        print("temp is good at " + str(t_hot) + " set to " + str(temp_set))
         relay.heater_off()
-        temp_status(tod)
+        temp_status()
     time.sleep(5)
 
 
@@ -147,11 +140,11 @@ def check_relays():
         print(errorMessages.E3)
 
 
-def temp_status(tod):
+def temp_status():
     if upload:
         check_relays()
         try:
-            mySql.insert(now, tod, season, temp_set, t_hot, uvb_status, day_status,
+            mySql.insert(now, cycle, season, temp_set, t_hot, uvb_status, day_status,
                          night_status, heater_status)
         except:
             print((errorMessages.E7))
