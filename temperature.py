@@ -95,7 +95,7 @@ def control_heat(tod):
 
 def control_elements():
     check_temp()
-    if t_hot < fail_safe:
+    if t_hot < fail_safe or t_hot < temp_set - 5:
         relay.emergency_heat()
         temp_status()
     elif t_hot < temp_set:
