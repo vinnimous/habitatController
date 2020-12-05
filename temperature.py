@@ -63,6 +63,7 @@ def control_heat(tod):
         season = winter
     if (tod == "day") & (season == winter):
         temp_set = winter_day
+        print(str(temp_set) + " " + str(winter_day))
         while now < mapSun.sunset:
             check_temp()
             control_heat(tod)
