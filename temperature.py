@@ -37,7 +37,8 @@ winter_day = 100
 spring_night = 79
 summer_night = 80
 autumn_night = 79
-winter_night = 78
+winter_night = 79
+fail_safe = 75
 
 spring_season = "03-01"
 summer_season = "06-01"
@@ -87,7 +88,10 @@ def control_heat(tod):
 
 def control_heat(tod, temp_set):
     check_temp()
-    if t_hot < temp_set:
+    if t_hot < fail_safe:
+        relay.emergency_heat()
+        temp_status(tod, temp_set)
+    elif t_hot < temp_set:
         relay.heater_on()
         temp_status(tod, temp_set)
     elif t_hot < temp_set + 1:
@@ -95,6 +99,7 @@ def control_heat(tod, temp_set):
     else:
         relay.heater_off()
         temp_status(tod, temp_set)
+    print(t_hot)
     time.sleep(5)
 
 
