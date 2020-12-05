@@ -39,6 +39,7 @@ summer_night = 80
 autumn_night = 79
 winter_night = 79
 fail_safe = 75
+temp_set = fail_safe
 
 spring_season = "03-01"
 summer_season = "06-01"
@@ -49,7 +50,7 @@ now = datetime.datetime.now()
 
 
 def control_heat(tod):
-    global season, now
+    global season, now, set
     if (now.strftime("%m-%d")) > winter_season:
         season = winter
     elif (now.strftime("%m-%d")) > autumn_season:
@@ -63,54 +64,44 @@ def control_heat(tod):
     if (tod == "day") & (season == winter):
         while now < mapSun.sunset:
             check_temp()
-            if t_hot < fail_safe:
-                relay.emergency_heat()
-                temp_status(tod, winter_day)
-            elif t_hot < winter_day:
-                relay.heater_on()
-                temp_status(tod, winter_day)
-            elif t_hot < winter_day + 1:
-                temp_status(tod, winter_day)
-            else:
-                relay.heater_off()
-                temp_status(tod, winter_day)
-            time.sleep(5)
+            control_heat(tod, )
     elif (tod == "day") & (season == autumn):
         while now < mapSun.sunset:
-            control_heat(tod, autumn_day)
+            control_heat(tod)
     elif (tod == "day") & (season == summer):
         while now < mapSun.sunset:
-            control_heat(tod, summer_day)
+            control_heat(tod)
     elif (tod == "day") & (season == spring):
         while now < mapSun.sunset:
-            control_heat(tod, spring_day)
+            control_heat(tod)
     elif (tod == "night") & (season == winter):
         while now > mapSun.sunset or now < mapSun.sunrise:
-            control_heat(tod, winter_night)
+            control_heat(tod)
     elif (tod == "night") & (season == autumn):
         while now > mapSun.sunset or now < mapSun.sunrise:
-            control_heat(tod, autumn_night)
+            control_heat(tod)
     elif (tod == "night") & (season == summer):
         while now > mapSun.sunset or now < mapSun.sunrise:
-            control_heat(tod, summer_night)
+            control_heat(tod)
     elif (tod == "night") & (season == spring):
         while now > mapSun.sunset or now < mapSun.sunrise:
-            control_heat(tod, spring_night)
+            control_heat(tod)
 
 
-def control_heat(tod, temp_set):
+def control_heat(tod):
+    global temp_set
     check_temp()
     if t_hot < fail_safe:
         relay.emergency_heat()
-        temp_status(tod, temp_set)
+        temp_status(tod)
     elif t_hot < temp_set:
         relay.heater_on()
-        temp_status(tod, temp_set)
+        temp_status(tod)
     elif t_hot < temp_set + 1:
-        temp_status(tod, temp_set)
+        temp_status(tod)
     else:
         relay.heater_off()
-        temp_status(tod, temp_set)
+        temp_status(tod)
     time.sleep(5)
 
 
@@ -145,7 +136,7 @@ def check_relays():
         print(errorMessages.E3)
 
 
-def temp_status(tod, temp_set):
+def temp_status(tod):
     if upload:
         check_relays()
         try:
