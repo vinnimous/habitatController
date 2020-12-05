@@ -107,7 +107,7 @@ def control_heat(tod):
     else:
         print("temp is good at " + str(t_hot) + " set to " + str(temp_set))
         relay.heater_off()
-       temp_status(tod)
+        temp_status(tod)
     time.sleep(5)
 
 
