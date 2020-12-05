@@ -62,6 +62,7 @@ def control_heat(tod):
         season = winter
     if (tod == "day") & (season == winter):
         while now < mapSun.sunset:
+            print(tod)
             control_heat(tod, winter_day)
     elif (tod == "day") & (season == autumn):
         while now < mapSun.sunset:
