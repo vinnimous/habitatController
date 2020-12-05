@@ -11,6 +11,8 @@ import mapSun
 import relay
 import mySql
 
+upload = False
+
 h_hot = 0
 h_cold = 0
 t_hot = 0
@@ -59,101 +61,41 @@ def control_heat(tod):
         season = winter
     if (tod == "day") & (season == winter):
         while now < mapSun.sunset:
-            check_temp()
-            if t_hot < winter_day:
-                relay.heater_on()
-                temp_status(tod, winter_day)
-            elif t_hot < winter_day + 2:
-                temp_status(tod, winter_day)
-            else:
-                relay.heater_off()
-                temp_status(tod, winter_day)
-            time.sleep(2)
+            control_heat(tod, winter_day)
     elif (tod == "day") & (season == autumn):
         while now < mapSun.sunset:
-            check_temp()
-            if t_hot < autumn_day:
-                relay.heater_on()
-                temp_status(tod, autumn_day)
-            elif t_hot < autumn_day + 2:
-                temp_status(tod, autumn_day)
-            else:
-                relay.heater_off()
-                temp_status(tod, autumn_day)
-            time.sleep(2)
+            control_heat(tod, autumn_day)
     elif (tod == "day") & (season == summer):
         while now < mapSun.sunset:
-            check_temp()
-            if t_hot < summer_day:
-                relay.heater_on()
-                temp_status(tod, summer_day)
-            elif t_hot < summer_day + 2:
-                temp_status(tod, summer_day)
-            else:
-                relay.heater_off()
-                temp_status(tod, summer_day)
-            time.sleep(2)
+            control_heat(tod, summer_day)
     elif (tod == "day") & (season == spring):
         while now < mapSun.sunset:
-            check_temp()
-            if t_hot < spring_day:
-                relay.heater_on()
-                temp_status(tod, spring_day)
-            elif t_hot < spring_day + 2:
-                temp_status(tod, spring_day)
-            else:
-                relay.heater_off()
-                temp_status(tod, spring_day)
-            time.sleep(2)
+            control_heat(tod, spring_day)
     elif (tod == "night") & (season == winter):
         while now > mapSun.sunset or now < mapSun.sunrise:
-            check_temp()
-            if t_hot < winter_night:
-                relay.heater_on()
-                temp_status(tod, winter_night)
-            elif t_hot < winter_night + 2:
-                temp_status(tod, winter_night)
-            else:
-                relay.heater_off()
-                temp_status(tod, winter_night)
-            time.sleep(2)
+            control_heat(tod, winter_night)
     elif (tod == "night") & (season == autumn):
         while now > mapSun.sunset or now < mapSun.sunrise:
-            check_temp()
-            if t_hot < autumn_night:
-                relay.heater_on()
-                temp_status(tod, autumn_night)
-            elif t_hot < autumn_night + 2:
-                temp_status(tod, autumn_night)
-            else:
-                relay.heater_off()
-                temp_status(tod, autumn_night)
-            time.sleep(2)
+            control_heat(tod, autumn_night)
     elif (tod == "night") & (season == summer):
         while now > mapSun.sunset or now < mapSun.sunrise:
-            check_temp()
-            if t_hot < summer_night:
-                relay.heater_on()
-                temp_status(tod, summer_night)
-            elif t_hot < summer_night + 2:
-                temp_status(tod, summer_night)
-            else:
-                relay.heater_off()
-                temp_status(tod, summer_night)
-            time.sleep(2)
+            control_heat(tod, summer_night)
     elif (tod == "night") & (season == spring):
         while now > mapSun.sunset or now < mapSun.sunrise:
-            check_temp()
-            print(t_hot)
-            if t_hot < spring_night:
-                relay.heater_on()
-                temp_status(tod, spring_night)
-            elif t_hot < spring_night + 2:
-                temp_status(tod, spring_night)
-            else:
-                relay.heater_off()
-                temp_status(tod, spring_night)
-            time.sleep(2)
+            control_heat(tod, spring_night)
+
+
+def control_heat(tod, temp_set):
+    check_temp()
+    if t_hot < temp_set:
+        relay.heater_on()
+        temp_status(tod, temp_set)
+    elif t_hot < temp_set + 1:
+        temp_status(tod, temp_set)
+    else:
+        relay.heater_off()
+        temp_status(tod, temp_set)
+    time.sleep(5)
 
 
 def check_temp():
@@ -188,6 +130,10 @@ def check_relays():
 
 
 def temp_status(tod, temp_set):
-    check_relays()
-    mySql.insert(now, tod, season, temp_set, t_hot, uvb_status, day_status,
-                 night_status, heater_status)
+    if upload:
+        check_relays()
+        try:
+            mySql.insert(now, tod, season, temp_set, t_hot, uvb_status, day_status,
+                         night_status, heater_status)
+        except:
+            print((errorMessages.E7))
