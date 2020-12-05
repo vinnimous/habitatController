@@ -39,7 +39,7 @@ summer_night = 80
 autumn_night = 79
 winter_night = 79
 fail_safe = 75
-temp_set = fail_safe
+temp_set = 75
 
 spring_season = "03-01"
 summer_season = "06-01"
