@@ -50,7 +50,7 @@ now = datetime.datetime.now()
 
 
 def control_heat(tod):
-    global season, now, set
+    global season, now, temp_set
     if (now.strftime("%m-%d")) > winter_season:
         season = winter
     elif (now.strftime("%m-%d")) > autumn_season:
@@ -62,10 +62,12 @@ def control_heat(tod):
     else:
         season = winter
     if (tod == "day") & (season == winter):
+        temp_set = winter_day
         while now < mapSun.sunset:
             check_temp()
-            control_heat(tod, )
+            control_heat(tod)
     elif (tod == "day") & (season == autumn):
+        temp_set = autumn_day
         while now < mapSun.sunset:
             control_heat(tod)
     elif (tod == "day") & (season == summer):
