@@ -66,32 +66,32 @@ def control_heat(tod):
         print(str(temp_set) + " " + str(winter_day))
         while now < mapSun.sunset:
             check_temp()
-            control_heat(tod)
+            control_elements(tod)
     elif (tod == "day") & (season == autumn):
         temp_set = autumn_day
         while now < mapSun.sunset:
-            control_heat(tod)
+            control_elements(tod)
     elif (tod == "day") & (season == summer):
         while now < mapSun.sunset:
-            control_heat(tod)
+            control_elements(tod)
     elif (tod == "day") & (season == spring):
         while now < mapSun.sunset:
-            control_heat(tod)
+            control_elements(tod)
     elif (tod == "night") & (season == winter):
         while now > mapSun.sunset or now < mapSun.sunrise:
-            control_heat(tod)
+            control_elements(tod)
     elif (tod == "night") & (season == autumn):
         while now > mapSun.sunset or now < mapSun.sunrise:
-            control_heat(tod)
+            control_elements(tod)
     elif (tod == "night") & (season == summer):
         while now > mapSun.sunset or now < mapSun.sunrise:
-            control_heat(tod)
+            control_elements(tod)
     elif (tod == "night") & (season == spring):
         while now > mapSun.sunset or now < mapSun.sunrise:
-            control_heat(tod)
+            control_elements(tod)
 
 
-def control_heat(tod):
+def control_elements(tod):
     check_temp()
     print(t_hot)
     if t_hot < fail_safe:
