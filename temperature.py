@@ -30,6 +30,8 @@ summer = "summer"
 autumn = "autumn"
 winter = "winter"
 
+cycle = "unknown"
+
 spring_day = 102
 summer_day = 105
 autumn_day = 102
@@ -50,7 +52,8 @@ now = datetime.datetime.now()
 
 
 def control_heat(tod):
-    global season, now, temp_set
+    global season, now, temp_set, cycle
+    cycle = tod
     if (now.strftime("%m-%d")) > winter_season:
         season = winter
     elif (now.strftime("%m-%d")) > autumn_season:
@@ -63,7 +66,6 @@ def control_heat(tod):
         season = winter
     if (tod == "day") & (season == winter):
         temp_set = winter_day
-        print(str(temp_set) + " " + str(winter_day))
         while now < mapSun.sunset:
             check_temp()
             control_elements(tod)
@@ -94,6 +96,8 @@ def control_heat(tod):
 def control_elements(tod):
     check_temp()
     print(t_hot)
+    print(cycle)
+    print(str(fail_safe))
     if t_hot < fail_safe:
         print("failsafe temp is " + str(t_hot) + " set to " + str(temp_set))
         relay.emergency_heat()
