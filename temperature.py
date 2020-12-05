@@ -92,7 +92,7 @@ def control_heat(tod):
     global temp_set
     check_temp()
     if t_hot < fail_safe:
-        print("failsafe temp is " + t_hot)
+        print("failsafe temp is " + str(t_hot))
         relay.emergency_heat()
         temp_status(tod)
     elif t_hot < temp_set:
@@ -103,7 +103,7 @@ def control_heat(tod):
         print("still heating")
         temp_status(tod)
     else:
-        print("temp is good at " + t_hot)
+        print("temp is good at " + str(t_hot))
         relay.heater_off()
         temp_status(tod)
     time.sleep(5)
