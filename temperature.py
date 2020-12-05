@@ -63,6 +63,7 @@ def control_heat(tod):
         season = winter
     if (tod == "day") & (season == winter):
         temp_set = winter_day
+        print(str(temp_set) + " " + str(winter_day))
         while now < mapSun.sunset:
             check_temp()
             control_heat(tod)
@@ -107,7 +108,7 @@ def control_heat(tod):
     else:
         print("temp is good at " + str(t_hot) + " set to " + str(temp_set))
         relay.heater_off()
-       temp_status(tod)
+        temp_status(tod)
     time.sleep(5)
 
 
