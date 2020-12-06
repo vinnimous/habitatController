@@ -164,7 +164,7 @@ def temp_status():
             mySql.insert(datetime.datetime.now(), cycle, season, temp_set, t_hot, uvb_status, day_status,
                          night_status, heater_status)
         except:
-            print((errorMessages.E7))
+            print(errorMessages.E7)
     if std_out:
         print("Current time: {} Cycle: {} Season: {} Temp_Set {} Temp_Read {} UVB {} Day {} Night {} Heat {}  ".
               format(datetime.datetime.now(), cycle, season, temp_set, t_hot, uvb_status, day_status,
