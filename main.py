@@ -18,17 +18,16 @@ schedule.every().day.at("00:00").do(mapSun.new_day)
 
 while run_for_ever:
     try:
-        now = datetime.datetime.now()
         if mapSun.need_to_update:
             mapSun.current_times()
             mapSun.need_to_update = False
-        if (now > mapSun.sunrise) & (now < mapSun.sunset):
+        if (datetime.datetime.now() > mapSun.sunrise) & (datetime.datetime.now() < mapSun.sunset):
             relay.day_light()
             tod = "day"
         else:
             relay.night_light()
             tod = "night"
-        temperature.control_heat(tod)
+        temperature.find_season(tod)
         schedule.run_pending()
         time.sleep(10)
     except:
