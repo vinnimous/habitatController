@@ -12,6 +12,7 @@ import relay
 import mySql
 
 upload = False
+std_out = True
 
 h_hot = 0
 h_cold = 0
@@ -48,49 +49,65 @@ summer_season = "06-01"
 autumn_season = "09-01"
 winter_season = "12-01"
 
-now = datetime.datetime.now()
+
+def manage(tod):
+    find_season(tod)
+    control_heat()
 
 
-def control_heat(tod):
-    global season, now, temp_set, cycle
-    cycle = tod
-    if (now.strftime("%m-%d")) > winter_season:
+def find_season(tod):
+    global season, cycle
+    if (datetime.datetime.now().strftime("%m-%d")) > winter_season:
         season = winter
-    elif (now.strftime("%m-%d")) > autumn_season:
+    elif (datetime.datetime.now().strftime("%m-%d")) > autumn_season:
         season = autumn
-    elif (now.strftime("%m-%d")) > summer_season:
+    elif (datetime.datetime.now().strftime("%m-%d")) > summer_season:
         season = summer
-    elif (now.strftime("%m-%d")) > spring_season:
+    elif (datetime.datetime.now().strftime("%m-%d")) > spring_season:
         season = spring
     else:
         season = winter
-    if (tod == "day") & (season == winter):
+    cycle = tod
+
+
+def control_heat():
+    global temp_set
+    while (datetime.datetime.now() < mapSun.sunset) and (cycle == "day") and (season == winter):
         temp_set = winter_day
-        while now < mapSun.sunset:
-            check_temp()
-            control_elements()
-    elif (tod == "day") & (season == autumn):
+        control_elements()
+        break
+    while (datetime.datetime.now() < mapSun.sunset) and (cycle == "day") and (season == autumn):
         temp_set = autumn_day
-        while now < mapSun.sunset:
-            control_elements()
-    elif (tod == "day") & (season == summer):
-        while now < mapSun.sunset:
-            control_elements()
-    elif (tod == "day") & (season == spring):
-        while now < mapSun.sunset:
-            control_elements()
-    elif (tod == "night") & (season == winter):
-        while now > mapSun.sunset or now < mapSun.sunrise:
-            control_elements()
-    elif (tod == "night") & (season == autumn):
-        while now > mapSun.sunset or now < mapSun.sunrise:
-            control_elements()
-    elif (tod == "night") & (season == summer):
-        while now > mapSun.sunset or now < mapSun.sunrise:
-            control_elements()
-    elif (tod == "night") & (season == spring):
-        while now > mapSun.sunset or now < mapSun.sunrise:
-            control_elements()
+        control_elements()
+        break
+    while (datetime.datetime.now() < mapSun.sunset) and (cycle == "day") and (season == summer):
+        temp_set = summer_day
+        control_elements()
+        break
+    while (datetime.datetime.now() < mapSun.sunset) and (cycle == "day") and (season == spring):
+        temp_set = spring_day
+        control_elements()
+        break
+    while ((datetime.datetime.now() > mapSun.sunset) or (datetime.datetime.now() < mapSun.sunrise)) \
+            and (cycle == "night") and (season == winter):
+        temp_set = winter_night
+        control_elements()
+        break
+    while ((datetime.datetime.now() > mapSun.sunset) or (datetime.datetime.now() < mapSun.sunrise)) \
+            and (cycle == "night") and (season == autumn):
+        temp_set = autumn_night
+        control_elements()
+        break
+    while ((datetime.datetime.now() > mapSun.sunset) or (datetime.datetime.now() < mapSun.sunrise)) \
+            and (cycle == "night") and (season == summer):
+        temp_set = summer_night
+        control_elements()
+        break
+    while ((datetime.datetime.now() > mapSun.sunset) or (datetime.datetime.now() < mapSun.sunrise)) \
+            and (cycle == "night") and (season == spring):
+        temp_set = spring_night
+        control_elements()
+        break
 
 
 def control_elements():
@@ -142,9 +159,13 @@ def check_relays():
 
 def temp_status():
     if upload:
-        check_relays()
         try:
-            mySql.insert(now, cycle, season, temp_set, t_hot, uvb_status, day_status,
+            check_relays()
+            mySql.insert(datetime.datetime.now(), cycle, season, temp_set, t_hot, uvb_status, day_status,
                          night_status, heater_status)
         except:
             print((errorMessages.E7))
+    if std_out:
+        print("Current time: {} Cycle: {} Season: {} Temp_Set {} Temp_Read {} UVB {} Day {} Night {} Heat {}  ".
+              format(datetime.datetime.now(), cycle, season, temp_set, t_hot, uvb_status, day_status,
+                     night_status, heater_status))
