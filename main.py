@@ -29,9 +29,7 @@ while run_for_ever:
             print("there")
             relay.night_light()
             tod = "night"
-        print(tod)
-        temperature.find_season(tod)
-        print("got temp")
+        temperature.manage(tod)
         schedule.run_pending()
         time.sleep(10)
     except:
