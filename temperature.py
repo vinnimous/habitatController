@@ -11,8 +11,7 @@ import mapSun
 import relay
 import mySql
 
-upload = False
-std_out = True
+from main import log_upload, log_std_out
 
 h_hot = 0
 h_cold = 0
@@ -43,6 +42,9 @@ autumn_night = 79
 winter_night = 79
 fail_safe = 75
 temp_set = fail_safe
+temp_rest = 5
+rest_count = 0
+rest_limit = 12
 
 spring_season = "03-01"
 summer_season = "06-01"
@@ -111,19 +113,16 @@ def control_heat():
 
 
 def control_elements():
+    global rest_count
     check_temp()
     if t_hot < fail_safe or t_hot < temp_set - 5:
         relay.emergency_heat()
-        temp_status()
     elif t_hot < temp_set:
         relay.heater_on()
-        temp_status()
-    elif t_hot < temp_set + 1:
-        temp_status()
     else:
         relay.heater_off()
-        temp_status()
-    time.sleep(5)
+    temp_status()
+    time.sleep(temp_rest)
 
 
 def check_temp():
@@ -158,14 +157,13 @@ def check_relays():
 
 
 def temp_status():
-    if upload:
+    if log_upload:
         try:
-            check_relays()
             mySql.insert(datetime.datetime.now(), cycle, season, temp_set, t_hot, uvb_status, day_status,
                          night_status, heater_status)
         except:
             print(errorMessages.E7)
-    if std_out:
+    if log_std_out:
         print("Current time: {} Cycle: {} Season: {} Temp_Set {} Temp_Read {} UVB {} Day {} Night {} Heat {}  ".
               format(datetime.datetime.now(), cycle, season, temp_set, t_hot, uvb_status, day_status,
                      night_status, heater_status))

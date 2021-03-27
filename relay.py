@@ -28,15 +28,15 @@ def night_light():
 
     
 def day_light():
-    GPIO.output(pin_light, GPIO.LOW) # Turn on light bulb
-    GPIO.output(pin_uvb, GPIO.LOW) # Turn on UVB light
+    GPIO.output(pin_light, GPIO.LOW)  # Turn on light bulb
+    GPIO.output(pin_uvb, GPIO.LOW)  # Turn on UVB light
     GPIO.output(pin_night, GPIO.HIGH)  # Turn off night light
     
     
 def night_light():
     GPIO.output(pin_light, GPIO.HIGH)  # Turn off light bulb
     GPIO.output(pin_uvb, GPIO.HIGH)  # Turn off UVB light
-    GPIO.output(pin_night, GPIO.LOW) # Turn on night light
+    GPIO.output(pin_night, GPIO.LOW)  # Turn on night light
 
 
 def emergency_heat():
@@ -54,8 +54,8 @@ def all_off():
 
 
 def heater_on():
-    GPIO.output(pin_heater, GPIO.LOW)
+    GPIO.output(pin_heater, GPIO.LOW)  # Turn on heater bulb
 
 
 def heater_off():
-    GPIO.output(pin_heater, GPIO.HIGH)
+    GPIO.output(pin_heater, GPIO.HIGH)  # Turn off heater bulb

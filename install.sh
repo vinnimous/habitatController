@@ -1,45 +1,85 @@
 #!/bin/bash
 
-sudo apt-get install -y build-essential python-dev python-smbus python3-pip python-mysqldb
-#https://grafana.com/docs/grafana/latest/installation/debian/
-sudo apt-get install -y apt-transport-https software-properties-common wget mariadb-server
+RASP_MOD_A="Raspberry Pi Model A"
+RASP_MOD_B="Raspberry Pi Model B"
+MODEL_FILE=/sys/firmware/devicetree/base/model
+IS_TYPE_A=false
+IS_TYPE_B=false
+ERROR_MOD_NOT_FOUND="Undetected Raspberry Pi Model"
+CRONJOB="@reboot python3 /home/pi/habitatController/main.py"
+CRONFILE="/var/spool/cron/crontabs/pi"
+get_arch() {
+  if grep -q $RASP_MOD_A "$MODEL_FILE"; then
+    echo "Model A detected"
+    IS_TYPE_A=true
+  elif grep -q $RASP_MOD_B "$MODEL_FILE"; then
+    echo "Model B detected"
+    IS_TYPE_B=true
+  else
+    echo "Undetected Raspberry Pi Model"
+  fi
+}
 
-sudo apt-get install -y adduser libfontconfig1
-wget https://dl.grafana.com/oss/release/grafana-rpi_7.3.4_armhf.deb
-sudo dpkg -i grafana-rpi_7.3.4_armhf.deb
+updating() {
+  sudo apt-get update -y
+}
 
+install_basics() {
+  sudo apt-get install -y build-essential python-dev python-smbus python3-pip
+}
 
+install_mysql() {
+  sudo apt-get install -y apt-transport-https software-properties-common wget mariadb-server adduser libfontconfig1
+  sudo apt-get install -y python-mysqldb
+}
 
-wget -q -O - https://packages.grafana.com/gpg.key | sudo apt-key add -
-echo "deb https://packages.grafana.com/oss/deb stable main" | sudo tee -a /etc/apt/sources.list.d/grafana.list
-sudo apt-get update
-sudo apt-get install -y grafana
-sudo service grafana-server start
-sudo service grafana-server status
-sudo update-rc.d grafana-server defaults
+install_grafana() {
+  if $RASP_MOD_B; then
+    grafana_apt
+  elif $RASP_MOD_A; then
+    grafana_deb
+  else
+    echo "$ERROR_MOD_NOT_FOUND"
+  fi
+}
 
-sudo mysql_secure_installation
-sudo mysql -u root -p
+grafana_deb() {
+  wget https://dl.grafana.com/oss/release/grafana-rpi_7.3.4_armhf.deb
+  sudo dpkg -i grafana-rpi_7.3.4_armhf.deb
+  #https://grafana.com/docs/grafana/latest/installation/debian/
+}
 
+grafana_apt() {
+  wget -q -O - https://packages.grafana.com/gpg.key | sudo apt-key add -
+  echo "deb https://packages.grafana.com/oss/deb stable main" | sudo tee -a /etc/apt/sources.list.d/grafana.list
+  sudo apt-get update
+  sudo apt-get install -y grafana
+}
 
-CREATE DATABASE IF NOT EXISTS habitatHistoryDB;
+start_grafana() {
+  if $RASP_MOD_B; then
+    sudo /bin/systemctl enable grafana-server
+    sudo /bin/systemctl start grafana-server
+  elif $RASP_MOD_A; then
+    sudo service grafana-server start
+    sudo update-rc.d grafana-server defaults
+  else
+    echo "$ERROR_MOD_NOT_FOUND"
+  fi
+}
 
-create user 'grafanauser'@'localhost' identified by 'grafanauserPW';
+setup_mysql() {
+  sudo mysql_secure_installation
+  sudo mysql -u root -p <createDB.sql
+}
 
-grant all privileges on habitatHistoryDB.* to 'grafanauser'@'localhost';
+create_cron() {
+  echo "$CRONJOB" | sudo tee -a $CRONFILE
+}
 
-flush privileges;
-
-USE habitatHistoryDB;
-
-CREATE TABLE IF NOT EXISTS habitatHistoryTable (
-    DATE DATETIME,
-    TOD VARCHAR(10),
-    SEASON VARCHAR(15),
-    TEMP_SET FLOAT,
-    TEMP_ACT FLOAT,
-    LIGHT_UVB BINARY,
-    LIGHT_DAY BINARY,
-    LIGHT_NIGHT BINARY,
-    HEAT_BULB BINARY
-);
+get_arch
+updating
+install_basics
+install_grafana
+create_cron
+start_grafana
