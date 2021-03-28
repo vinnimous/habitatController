@@ -1,5 +1,5 @@
 import pymysql
-from temperature import check_relays
+import temperature
 
 sqlHost = "localhost"
 sqlUser = "grafanauser"
@@ -9,7 +9,7 @@ sqlArchiveLimit = 30
 
 
 def insert(date, tod, season, temp_set, temp_act, light_uvb, light_day, light_night, heat_bulb):
-    check_relays()
+    temperature.check_relays()
     db = pymysql.connect(sqlHost, sqlUser, sqlPass, sqlDB)
     cursor = db.cursor()
     sql = "INSERT INTO habitatHistoryTable ( \

@@ -17,7 +17,7 @@ tod = "day"
 mapSun.current_times()
 schedule.every().day.at("00:00").do(mapSun.new_day)
 
-log_upload = False
+log_upload = True
 log_std_out = True
 
 while run_for_ever:
