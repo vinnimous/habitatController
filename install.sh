@@ -47,9 +47,9 @@ install_mysql() {
 }
 
 install_grafana() {
-  if $RASP_MOD_B; then
+  if $IS_TYPE_B; then
     grafana_apt
-  elif $RASP_MOD_A; then
+  elif $IS_TYPE_A; then
     grafana_deb
   else
     echo "$ERROR_MOD_NOT_FOUND"
@@ -70,10 +70,10 @@ grafana_apt() {
 }
 
 start_grafana() {
-  if $RASP_MOD_B; then
+  if $IS_TYPE_B; then
     sudo /bin/systemctl enable grafana-server
     sudo /bin/systemctl start grafana-server &
-  elif $RASP_MOD_A; then
+  elif $IS_TYPE_A; then
     sudo service grafana-server start
     sudo update-rc.d grafana-server defaults
   else
