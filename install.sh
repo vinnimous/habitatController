@@ -22,7 +22,7 @@ get_arch() {
     echo "$RASP_MOD_A detected"
     IS_TYPE_A=true
   elif grep -q "$RASP_MOD_B" "$MODEL_FILE"; then
-    echo "RASP_MOD_B detected"
+    echo "$RASP_MOD_B detected"
     IS_TYPE_B=true
   else
     echo "Undetected Raspberry Pi Model"
