@@ -1,7 +1,7 @@
 #!/bin/bash
 
 RASP_MOD_A="Raspberry Pi Model A"
-RASP_MOD_B="Raspberry Pi Model B"
+RASP_MOD_B="Raspberry Pi 3 Model B"
 MODEL_FILE=/sys/firmware/devicetree/base/model
 IS_TYPE_A=false
 IS_TYPE_B=false
