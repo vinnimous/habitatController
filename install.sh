@@ -43,7 +43,7 @@ install_basics() {
 
 install_mysql() {
   sudo apt-get install -y apt-transport-https software-properties-common wget mariadb-server adduser libfontconfig1
-  sudo apt-get install -y python-mysqldb mysql-server mysql-client
+  sudo apt-get install -y python-mysqldb
 }
 
 install_grafana() {
@@ -110,6 +110,7 @@ get_arch
 updating
 install_basics
 install_requirements
+install_mysql
 setup_mysql
 install_grafana
 create_cron
