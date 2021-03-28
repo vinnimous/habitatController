@@ -1,10 +1,12 @@
+FLUSH PRIVILEGES;
+
 CREATE DATABASE IF NOT EXISTS habitatHistoryDB;
 
 create user 'grafanauser'@'localhost' identified by 'grafanauserPW';
 
 grant all privileges on habitatHistoryDB.* to 'grafanauser'@'localhost';
 
-flush privileges;
+FLUSH PRIVILEGES;
 
 USE habitatHistoryDB;
 
