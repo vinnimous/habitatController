@@ -8,6 +8,15 @@ IS_TYPE_B=false
 ERROR_MOD_NOT_FOUND="Undetected Raspberry Pi Model"
 CRONJOB="@reboot python3 /home/pi/habitatController/main.py"
 CRONFILE="/var/spool/cron/crontabs/pi"
+CRONCAT="sudo cat $CRONFILE"
+TMPFILE=/tmp/tmpCronJobs.txt
+GRAFANA_ENABLE="sudo /bin/systemctl enable grafana-server"
+GRAFANA_START="sudo /bin/systemctl start grafana-server"
+GRAFANA_ENABLED="Loaded: loaded (/lib/systemd/system/grafana-server.service; enabled"
+GRAFANA_RUNNING="Active: active (running)"
+IS_GRAFANA_ENABLED=false
+IS_GRAFANA_RUNNING=false
+
 get_arch() {
   if grep -q $RASP_MOD_A "$MODEL_FILE"; then
     echo "Model A detected"
@@ -22,6 +31,10 @@ get_arch() {
 
 updating() {
   sudo apt-get update -y
+}
+
+install_requirements() {
+  pip3 install -r requirements.txt
 }
 
 install_basics() {
@@ -59,7 +72,7 @@ grafana_apt() {
 start_grafana() {
   if $RASP_MOD_B; then
     sudo /bin/systemctl enable grafana-server
-    sudo /bin/systemctl start grafana-server
+    sudo /bin/systemctl start grafana-server &
   elif $RASP_MOD_A; then
     sudo service grafana-server start
     sudo update-rc.d grafana-server defaults
@@ -68,18 +81,36 @@ start_grafana() {
   fi
 }
 
+#check_grafana() {
+#  if grep -q $GRAFANA_ENABLED "$MODEL_FILE"; then
+#    echo "Model A detected"
+#    IS_TYPE_A=true
+#  elif grep -q $RASP_MOD_B "$MODEL_FILE"; then
+#    echo "Model B detected"
+#    IS_TYPE_B=true
+#  else
+#    echo "Undetected Raspberry Pi Model"
+#  fi
+#}
+
 setup_mysql() {
   sudo mysql_secure_installation
   sudo mysql -u root -p <createDB.sql
 }
 
 create_cron() {
-  echo "$CRONJOB" | sudo tee -a $CRONFILE
+  crontab -l >$TMPFILE
+  echo "$CRONJOB" >>$TMPFILE
+  cron $TMPFILE
+  rm $TMPFILE
+  #echo "$CRONJOB" | sudo tee -a $CRONFILE
 }
 
 get_arch
 updating
 install_basics
+install_requirements
+setup_mysql
 install_grafana
 create_cron
 start_grafana
