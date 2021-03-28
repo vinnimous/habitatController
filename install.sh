@@ -30,6 +30,7 @@ get_arch() {
 }
 
 updating() {
+  echo
   sudo apt-get update -y
 }
 
@@ -106,6 +107,11 @@ create_cron() {
   #echo "$CRONJOB" | sudo tee -a $CRONFILE
 }
 
+restart() {
+  sudo apt autoremove -y
+  sudo shutdown -r
+}
+
 get_arch
 updating
 install_basics
@@ -115,3 +121,4 @@ setup_mysql
 install_grafana
 create_cron
 start_grafana
+restart
