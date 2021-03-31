@@ -108,11 +108,11 @@ setup_mysql() {
 
 create_cron() {
   echo "Trying to create a cronjob"
-  crontab -l >$TMPFILE
-  echo "$CRONJOB" >>$TMPFILE
-  cron $TMPFILE
-  rm $TMPFILE
-  #echo "$CRONJOB" | sudo tee -a $CRONFILE
+  #  crontab -l >$TMPFILE
+  #  echo "$CRONJOB" >>$TMPFILE
+  #  cron $TMPFILE
+  #  rm $TMPFILE
+  echo "$CRONJOB" | sudo tee -a $CRONFILE
 }
 
 restart() {

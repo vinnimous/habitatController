@@ -1,16 +1,21 @@
 #!/usr/bin/python3
 
 import datetime
+import logging.config
 import time
 
 import schedule
 
 import errorMessages
 import mapSun
+import mySql
 import relay
 import temperature
-import mySql
 
+logging.config.fileConfig('logging.conf')
+logger = logging.getLogger('habitatLogDebug')
+
+logger.debug("Starting")
 relay.setup()
 run_for_ever = True
 tod = "day"
@@ -37,4 +42,4 @@ while run_for_ever:
         schedule.run_pending()
         time.sleep(10)
     except:
-        print(errorMessages.E1)
+        logging.exception(errorMessages.E1)

@@ -1,17 +1,16 @@
 import datetime
 import time
 
+import RPi.GPIO as GPIO
 import adafruit_mcp9808
 import board
 import busio
-import RPi.GPIO as GPIO
 
 import errorMessages
 import mapSun
-import relay
 import mySql
-
-from main import log_upload, log_std_out
+import relay
+from main import log_upload, log_std_out, logger
 
 h_hot = 0
 h_cold = 0
@@ -70,6 +69,7 @@ def find_season(tod):
     else:
         season = winter
     cycle = tod
+    logger.debug("Season: {} ".format(season))
 
 
 def control_heat():
@@ -130,7 +130,7 @@ def check_temp():
     try:
         t_hot = adafruit_mcp9808.MCP9808(busio.I2C(board.SCL, board.SDA)).temperature * 9 / 5 + 32
     except:
-        print(errorMessages.E5)
+        logger.exception(errorMessages.E5)
 
 
 def check_relays():
@@ -153,7 +153,7 @@ def check_relays():
         else:
             night_status = 1
     except:
-        print(errorMessages.E3)
+        logger.exception(errorMessages.E3)
 
 
 def temp_status():
@@ -161,9 +161,9 @@ def temp_status():
         try:
             mySql.insert(datetime.datetime.now(), cycle, season, temp_set, t_hot, uvb_status, day_status,
                          night_status, heater_status)
-        except:
-            print(errorMessages.E7)
+        except (mySql.ERROR, mySql.WARNING) as e:
+            logger.error(e)
     if log_std_out:
-        print("Current time: {} Cycle: {} Season: {} Temp_Set {} Temp_Read {} UVB {} Day {} Night {} Heat {}  ".
-              format(datetime.datetime.now(), cycle, season, temp_set, t_hot, uvb_status, day_status,
-                     night_status, heater_status))
+        logger.info("Current time: {} Cycle: {} Season: {} Temp_Set {} Temp_Read {} UVB {} Day {} Night {} Heat {}  ".
+                    format(datetime.datetime.now(), cycle, season, temp_set, t_hot, uvb_status, day_status,
+                           night_status, heater_status))

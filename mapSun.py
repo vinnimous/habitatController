@@ -3,6 +3,8 @@ import datetime
 from astral import LocationInfo
 from astral.sun import sun
 
+from main import logger
+
 need_to_update = True
 dawn = 0
 sunrise = 0
@@ -25,3 +27,4 @@ def current_times():
     noon = s["noon"].replace(tzinfo=None)
     sunset = s["sunset"].replace(tzinfo=None)
     dusk = s["dusk"].replace(tzinfo=None)
+    logger.debug("Dawn: {} Sunrise: {} Sunset: {} Dusk: {}".format(dawn, sunrise, sunset, dusk))
