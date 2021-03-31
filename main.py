@@ -6,7 +6,6 @@ import time
 
 import schedule
 
-import errorMessages
 import mapSun
 import mySql
 import relay
@@ -23,7 +22,6 @@ mapSun.current_times()
 schedule.every().day.at("00:00").do(mapSun.new_day)
 
 log_upload = True
-log_std_out = False
 
 while run_for_ever:
     try:
@@ -41,5 +39,5 @@ while run_for_ever:
         temperature.manage(tod)
         schedule.run_pending()
         time.sleep(10)
-    except:
-        logging.exception(errorMessages.E1)
+    except Exception as e:
+        logger.exception(e)

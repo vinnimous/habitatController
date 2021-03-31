@@ -6,11 +6,10 @@ import adafruit_mcp9808
 import board
 import busio
 
-import errorMessages
 import mapSun
 import mySql
 import relay
-from main import log_upload, log_std_out, logger
+from main import log_upload, logger
 
 h_hot = 0
 h_cold = 0
@@ -129,8 +128,8 @@ def check_temp():
     global h_hot, t_hot, h_cold, t_cold
     try:
         t_hot = adafruit_mcp9808.MCP9808(busio.I2C(board.SCL, board.SDA)).temperature * 9 / 5 + 32
-    except:
-        logger.exception(errorMessages.E5)
+    except Exception as e:
+        logger.error(e)
 
 
 def check_relays():
@@ -152,8 +151,8 @@ def check_relays():
             night_status = 0
         else:
             night_status = 1
-    except:
-        logger.exception(errorMessages.E3)
+    except Exception as e:
+        logger.error(e)
 
 
 def temp_status():
@@ -162,8 +161,7 @@ def temp_status():
             mySql.insert(datetime.datetime.now(), cycle, season, temp_set, t_hot, uvb_status, day_status,
                          night_status, heater_status)
         except (mySql.ERROR, mySql.WARNING) as e:
-            logger.error(e)
-    if log_std_out:
-        logger.info("Current time: {} Cycle: {} Season: {} Temp_Set {} Temp_Read {} UVB {} Day {} Night {} Heat {}  ".
-                    format(datetime.datetime.now(), cycle, season, temp_set, t_hot, uvb_status, day_status,
-                           night_status, heater_status))
+            logger.exception(e)
+    logger.debug("Current time: {} Cycle: {} Season: {} Temp_Set {} Temp_Read {} UVB {} Day {} Night {} Heat {}  ".
+                 format(datetime.datetime.now(), cycle, season, temp_set, t_hot, uvb_status, day_status,
+                        night_status, heater_status))
