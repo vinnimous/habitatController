@@ -9,7 +9,7 @@ import busio
 import mapSun
 import mySql
 import relay
-from main import log_upload, logger
+from main import logger, log_upload
 
 h_hot = 0
 h_cold = 0
