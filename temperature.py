@@ -1,4 +1,5 @@
 import datetime
+import logging
 import time
 
 import RPi.GPIO as GPIO
@@ -9,7 +10,8 @@ import busio
 import mapSun
 import mySql
 import relay
-from main import logger, log_upload
+
+logger = logging.getLogger(__name__)
 
 h_hot = 0
 h_cold = 0

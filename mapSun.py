@@ -1,9 +1,10 @@
 import datetime
+import logging
 
 from astral import LocationInfo
 from astral.sun import sun
 
-from main import logger
+logger = logging.getLogger(__name__)
 
 need_to_update = True
 dawn = 0

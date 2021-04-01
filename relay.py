@@ -1,6 +1,8 @@
+import logging
+
 import RPi.GPIO as GPIO  # Import Raspberry Pi GPIO library
 
-from main import logger
+logger = logging.getLogger(__name__)
 
 pin_light = 17
 pin_heater = 27

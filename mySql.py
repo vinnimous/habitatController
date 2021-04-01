@@ -1,5 +1,10 @@
+import logging
+
 import pymysql
+
 import temperature
+
+logger = logging.getLogger(__name__)
 
 sqlHost = "localhost"
 sqlUser = "grafanauser"
@@ -27,8 +32,10 @@ def insert(date, tod, season, temp_set, temp_act, light_uvb, light_day, light_ni
     try:
         cursor.execute(sql)
         db.commit()
-    except:
+    except Exception as e:
+        logger.error(e)
         db.rollback()
+
     db.close()
 
 
@@ -40,6 +47,7 @@ def delete_old():
     try:
         cursor.execute(sql, adr)
         db.commit()
-    except:
+    except Exception as e:
+        logger.error(e)
         db.rollback()
     db.close()
