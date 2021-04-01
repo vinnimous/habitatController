@@ -8,3 +8,4 @@ schedule~=0.6.0
 relay~=0.0.8
 pymysql
 logging
+logging-config
