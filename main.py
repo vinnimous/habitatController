@@ -12,7 +12,7 @@ import relay
 import temperature
 
 logging.config.fileConfig('logging.conf')
-logger = logging.getLogger('habitatLogDebug')
+logger = logging.getLogger('main')
 
 logger.debug("Starting")
 relay.setup()

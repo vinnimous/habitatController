@@ -4,7 +4,7 @@ import pymysql
 
 import temperature
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger(mySql)
 
 sqlHost = "localhost"
 sqlUser = "grafanauser"

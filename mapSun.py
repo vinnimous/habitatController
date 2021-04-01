@@ -4,7 +4,7 @@ import logging
 from astral import LocationInfo
 from astral.sun import sun
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger('mapSun')
 
 need_to_update = True
 dawn = 0

@@ -2,7 +2,7 @@ import logging
 
 import RPi.GPIO as GPIO  # Import Raspberry Pi GPIO library
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger('relay')
 
 pin_light = 17
 pin_heater = 27
