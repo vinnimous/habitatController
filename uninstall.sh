@@ -38,6 +38,7 @@ uninstall_mysql() {
 uninstall_grafana() {
   sudo apt-get remove -y grafana
   sudo rm -f /etc/apt/sources.list.d/grafana.list
+  sudo userdel -r grafanauser
 }
 
 uninstall_cleanup() {

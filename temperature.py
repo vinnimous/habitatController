@@ -10,7 +10,6 @@ import busio
 import mapSun
 import mySql
 import relay
-from main import log_upload
 
 logger = logging.getLogger('temperature')
 
