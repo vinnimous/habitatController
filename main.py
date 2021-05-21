@@ -16,12 +16,10 @@ logger = logging.getLogger('main')
 
 logger.debug("Starting")
 relay.setup()
-
 run_for_ever = True
 tod = "day"
-current_times()
-schedule.every().day.at("00:00").do(new_day)
-
+mapSun.current_times()
+schedule.every().day.at("00:00").do(mapSun.new_day)
 log_upload = True
 
 log_upload = True
@@ -39,7 +37,7 @@ while run_for_ever:
         else:
             relay.night_light()
             tod = "night"
-        manage(tod)
+        temperature.manage(tod)
         schedule.run_pending()
         time.sleep(10)
     except Exception as e:
