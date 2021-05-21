@@ -81,7 +81,7 @@ start_grafana() {
     sudo /bin/systemctl enable grafana-server
     sudo /bin/systemctl start grafana-server &
   elif $IS_TYPE_A; then
-    sudo service grafana-server start
+    sudo service grafana-server start &
     sudo update-rc.d grafana-server defaults
   else
     echo "$ERROR_MOD_NOT_FOUND"
