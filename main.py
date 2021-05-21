@@ -6,8 +6,7 @@ import time
 
 import schedule
 
-import mapSun
-from mapSun import current_times
+from mapSun import current_times, need_to_update, new_day, sunrise, sunset
 from mySql import delete_old
 from relay import day_light, night_light, setup
 from temperature import manage
@@ -20,18 +19,18 @@ setup()
 run_for_ever = True
 tod = "day"
 current_times()
-schedule.every().day.at("00:00").do(mapSun.new_day)
+schedule.every().day.at("00:00").do(new_day)
 
 log_upload = True
 
 while run_for_ever:
     try:
-        if mapSun.need_to_update:
-            mapSun.current_times()
+        if need_to_update:
+            current_times()
             if log_upload:
                 delete_old()
-            mapSun.need_to_update = False
-        if (datetime.datetime.now() > mapSun.sunrise) & (datetime.datetime.now() < mapSun.sunset):
+            need_to_update = False
+        if (datetime.datetime.now() > sunrise) & (datetime.datetime.now() < sunset):
             day_light()
             tod = "day"
         else:
