@@ -35,19 +35,22 @@ def insert(date, tod, season, temp_set, temp_act, light_uvb, light_day, light_ni
     except Exception as e:
         logger.error(e)
         db.rollback()
-
-    db.close()
+    finally:
+        cursor.close()
+        db.close()
 
 
 def delete_old():
     db = pymysql.connect(sqlHost, sqlUser, sqlPass, sqlDB)
     cursor = db.cursor()
-    sql = "DELETE FROM from habitatHistoryTable where DATE < now() - interval %s DAY,"
+    sql = "DELETE FROM from habitatHistoryTable where DATE < now() - interval %s DAY"
     adr = sqlArchiveLimit
     try:
-        cursor.execute(sql, adr)
+        cursor.execute(sql, (adr,))
         db.commit()
     except Exception as e:
         logger.error(e)
         db.rollback()
-    db.close()
+    finally:
+        cursor.close()
+        db.close()
