@@ -1,12 +1,20 @@
+import logging
+
 import pymysql
+
+import temperature
+
+logger = logging.getLogger('mySql')
 
 sqlHost = "localhost"
 sqlUser = "grafanauser"
 sqlPass = "grafanauserPW"
 sqlDB = "habitatHistoryDB"
+sqlArchiveLimit = 30
 
 
 def insert(date, tod, season, temp_set, temp_act, light_uvb, light_day, light_night, heat_bulb):
+    temperature.check_relays()
     db = pymysql.connect(sqlHost, sqlUser, sqlPass, sqlDB)
     cursor = db.cursor()
     sql = "INSERT INTO habitatHistoryTable ( \
@@ -24,6 +32,22 @@ def insert(date, tod, season, temp_set, temp_act, light_uvb, light_day, light_ni
     try:
         cursor.execute(sql)
         db.commit()
-    except:
+    except Exception as e:
+        logger.error(e)
+        db.rollback()
+
+    db.close()
+
+
+def delete_old():
+    db = pymysql.connect(sqlHost, sqlUser, sqlPass, sqlDB)
+    cursor = db.cursor()
+    sql = "DELETE FROM from habitatHistoryTable where DATE < now() - interval %s DAY,"
+    adr = sqlArchiveLimit
+    try:
+        cursor.execute(sql, adr)
+        db.commit()
+    except Exception as e:
+        logger.error(e)
         db.rollback()
     db.close()

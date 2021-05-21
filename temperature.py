@@ -1,18 +1,17 @@
 import datetime
+import logging
 import time
 
+import RPi.GPIO as GPIO
 import adafruit_mcp9808
 import board
 import busio
-import RPi.GPIO as GPIO
 
-import errorMessages
 import mapSun
-import relay
 import mySql
+import relay
 
-upload = False
-std_out = True
+logger = logging.getLogger('temperature')
 
 h_hot = 0
 h_cold = 0
@@ -43,6 +42,9 @@ autumn_night = 79
 winter_night = 79
 fail_safe = 75
 temp_set = fail_safe
+temp_rest = 5
+rest_count = 0
+rest_limit = 12
 
 spring_season = "03-01"
 summer_season = "06-01"
@@ -68,6 +70,7 @@ def find_season(tod):
     else:
         season = winter
     cycle = tod
+    logger.debug("Season: {} ".format(season))
 
 
 def control_heat():
@@ -111,27 +114,24 @@ def control_heat():
 
 
 def control_elements():
+    global rest_count
     check_temp()
     if t_hot < fail_safe or t_hot < temp_set - 5:
         relay.emergency_heat()
-        temp_status()
     elif t_hot < temp_set:
         relay.heater_on()
-        temp_status()
-    elif t_hot < temp_set + 1:
-        temp_status()
     else:
         relay.heater_off()
-        temp_status()
-    time.sleep(5)
+    temp_status()
+    time.sleep(temp_rest)
 
 
 def check_temp():
     global h_hot, t_hot, h_cold, t_cold
     try:
         t_hot = adafruit_mcp9808.MCP9808(busio.I2C(board.SCL, board.SDA)).temperature * 9 / 5 + 32
-    except:
-        print(errorMessages.E5)
+    except Exception as e:
+        logger.error(e)
 
 
 def check_relays():
@@ -153,19 +153,17 @@ def check_relays():
             night_status = 0
         else:
             night_status = 1
-    except:
-        print(errorMessages.E3)
+    except Exception as e:
+        logger.error(e)
 
 
 def temp_status():
-    if upload:
+    if log_upload:
         try:
-            check_relays()
             mySql.insert(datetime.datetime.now(), cycle, season, temp_set, t_hot, uvb_status, day_status,
                          night_status, heater_status)
-        except:
-            print(errorMessages.E7)
-    if std_out:
-        print("Current time: {} Cycle: {} Season: {} Temp_Set {} Temp_Read {} UVB {} Day {} Night {} Heat {}  ".
-              format(datetime.datetime.now(), cycle, season, temp_set, t_hot, uvb_status, day_status,
-                     night_status, heater_status))
+        except (mySql.ERROR, mySql.WARNING) as e:
+            logger.exception(e)
+    logger.debug("Current time: {} Cycle: {} Season: {} Temp_Set {} Temp_Read {} UVB {} Day {} Night {} Heat {}  ".
+                 format(datetime.datetime.now(), cycle, season, temp_set, t_hot, uvb_status, day_status,
+                        night_status, heater_status))
