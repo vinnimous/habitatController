@@ -9,7 +9,6 @@ import busio
 
 import mapSun
 import relay
-from main import upload_temps
 
 logger = logging.getLogger('temperature')
 
