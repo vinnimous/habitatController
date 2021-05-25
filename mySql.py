@@ -3,14 +3,9 @@ from configparser import ConfigParser
 
 import pymysql
 
-import temperature
+from temperature import check_relays
 
 logger = logging.getLogger('mySql')
-
-sqlHost = "localhost"
-sqlUser = "grafanauser"
-sqlPass = "grafanauserPW"
-sqlDB = "habitatHistoryDB"
 sqlArchiveLimit = 30
 
 
@@ -32,7 +27,7 @@ def read_db_config(filename='config.ini', section='mysql'):
 
 
 def insert(date, tod, season, temp_set, temp_act, light_uvb, light_day, light_night, heat_bulb):
-    temperature.check_relays()
+    check_relays()
     db_config = read_db_config()
     db = pymysql.connect(**db_config)
     cursor = db.cursor()
