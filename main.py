@@ -3,6 +3,7 @@
 import datetime
 import logging.config
 import time
+from os import path
 
 import schedule
 
@@ -11,7 +12,9 @@ import mySql
 import relay
 import temperature
 
-logging.config.fileConfig('logging.conf')
+log_file_path = path.join(path.dirname(path.abspath(__file__)), 'logging.conf')
+
+logging.config.fileConfig(log_file_path)
 logger = logging.getLogger('main')
 
 logger.debug("Starting")
@@ -20,8 +23,6 @@ run_for_ever = True
 tod = "day"
 mapSun.current_times()
 schedule.every().day.at("00:00").do(mapSun.new_day)
-log_upload = True
-
 log_upload = True
 
 while run_for_ever:
