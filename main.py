@@ -9,8 +9,8 @@ import schedule
 
 import mapSun
 import relay
-import temperature
 from mySql import delete_old
+from temperature import manage
 
 log_file_path = path.join(path.dirname(path.abspath(__file__)), 'logging.conf')
 
@@ -38,7 +38,7 @@ while run_for_ever:
         else:
             relay.night_light()
             tod = "night"
-        temperature.manage(tod)
+        manage(tod)
         schedule.run_pending()
         time.sleep(10)
     except Exception as e:
