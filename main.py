@@ -9,7 +9,6 @@ import schedule
 
 import mapSun
 import relay
-# from mySql import delete_old
 from temperature import manage
 
 log_file_path = path.join(path.dirname(path.abspath(__file__)), 'logging.conf')
