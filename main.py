@@ -29,7 +29,7 @@ while run_for_ever:
     try:
         if mapSun.need_to_update:
             mapSun.current_times()
-            if log_upload:
+            if upload_temps:
                 mySql.delete_old()
             mapSun.need_to_update = False
         if (datetime.datetime.now() > mapSun.sunrise) & (datetime.datetime.now() < mapSun.sunset):
