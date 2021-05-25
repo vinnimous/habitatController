@@ -9,7 +9,6 @@ import busio
 
 import mapSun
 import relay
-from main import upload_temps
 
 logger = logging.getLogger('temperature')
 
@@ -158,6 +157,7 @@ def check_relays():
 
 
 def temp_status():
+    from main import upload_temps
     if upload_temps:
         from mySql import insert
         try:
