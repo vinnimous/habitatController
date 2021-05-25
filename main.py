@@ -23,13 +23,13 @@ run_for_ever = True
 tod = "day"
 mapSun.current_times()
 schedule.every().day.at("00:00").do(mapSun.new_day)
-log_upload = True
+upload_temps = True
 
 while run_for_ever:
     try:
         if mapSun.need_to_update:
             mapSun.current_times()
-            if log_upload:
+            if upload_temps:
                 mySql.delete_old()
             mapSun.need_to_update = False
         if (datetime.datetime.now() > mapSun.sunrise) & (datetime.datetime.now() < mapSun.sunset):
