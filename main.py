@@ -8,9 +8,9 @@ from os import path
 import schedule
 
 import mapSun
-import mySql
 import relay
 import temperature
+from mySql import delete_old
 
 log_file_path = path.join(path.dirname(path.abspath(__file__)), 'logging.conf')
 
@@ -30,7 +30,7 @@ while run_for_ever:
         if mapSun.need_to_update:
             mapSun.current_times()
             if upload_temps:
-                mySql.delete_old()
+                delete_old()
             mapSun.need_to_update = False
         if (datetime.datetime.now() > mapSun.sunrise) & (datetime.datetime.now() < mapSun.sunset):
             relay.day_light()

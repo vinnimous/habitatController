@@ -71,6 +71,7 @@ def delete_old():
         db.commit()
     except Exception as e:
         logger.error(e)
+        logger.error(sql)
         db.rollback()
     finally:
         cursor.close()
