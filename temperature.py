@@ -8,7 +8,6 @@ import board
 import busio
 
 import mapSun
-import mySql
 import relay
 from main import upload_temps
 
@@ -160,10 +159,11 @@ def check_relays():
 
 def temp_status():
     if upload_temps:
+        from mySql import insert
         try:
-            mySql.insert(datetime.datetime.now(), cycle, season, temp_set, t_hot, uvb_status, day_status,
-                         night_status, heater_status)
-        except (mySql.ERROR, mySql.WARNING) as e:
+            insert(datetime.datetime.now(), cycle, season, temp_set, t_hot, uvb_status, day_status,
+                   night_status, heater_status)
+        except Exception as e:
             logger.exception(e)
     logger.debug("Current time: {} Cycle: {} Season: {} Temp_Set {} Temp_Read {} UVB {} Day {} Night {} Heat {}  ".
                  format(datetime.datetime.now(), cycle, season, temp_set, t_hot, uvb_status, day_status,
