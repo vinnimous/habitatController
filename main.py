@@ -23,7 +23,7 @@ run_for_ever = True
 tod = "day"
 mapSun.current_times()
 schedule.every().day.at("00:00").do(mapSun.new_day)
-log_upload = True
+upload_temps = True
 
 while run_for_ever:
     try:
