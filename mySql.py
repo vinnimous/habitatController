@@ -1,5 +1,6 @@
 import logging
 from configparser import ConfigParser
+from os import path
 
 import pymysql
 
@@ -12,7 +13,7 @@ sqlArchiveLimit = 30
 def read_db_config(filename='config.ini', section='mysql'):
     # create parser and read ini configuration file
     parser = ConfigParser()
-    parser.read(filename)
+    parser.read(path.join(path.dirname(path.abspath(__file__)), filename))
 
     # get section, default to mysql
     db = {}
