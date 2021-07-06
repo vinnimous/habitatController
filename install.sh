@@ -141,6 +141,7 @@ restart() {
   sudo shutdown -r
 }
 
+
 get_arch
 updating
 install_basics
