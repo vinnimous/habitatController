@@ -6,37 +6,26 @@ TOKEN="Authorization: Bearer "
 CONTENT="Content-Type: application/json"
 ACCEPT="Accept: application/json"
 
-#GET, POST, DELETE
-KEY="/api/auth/keys"
-DATASOURCES="/api/datasources"
-DASHBOARD="/api/dashboards/db"
+DATASOURCES="grafana_datasources.yaml"
+DASHSOURCES="grafana_dashboards.yaml"
 
-SOURCES=(
-"grafana_data_mysql.json"
-)
-DASHES=(
-"grafana_dash_current.json"
-"grafana_dash_historical.json"
-)
+LOCATION_DATASOURCES="/etc/grafana/provisioning/datasources/"
+LOCATION_DASHBOARDS="/etc/grafana/provisioning/dashboards/"
 
-create_token(){
-  curl -X POST -H "Content-Type: application/json" -d '{"name":"$KEY_NAME", "role": "Admin"}' $URL | json_pp
+DASHBOARDS=(
+  "grafana_dash_current.json"
+  "grafana_dash_historical.json"
+)
+create_datasource() {
+  sudo cp $DATASOURCES $LOCATION_DATASOURCES
 }
 
-create_datasource(){
-  apiurl="$URL$DATASOURCES"
-  for d in "${SOURCES[@]}"; do
-  curl -X POST $apiurl -H "$CONTENT" -d @"$d"
+create_dashboard() {
+  for d in "${DASHBOARDS[@]}"; do
+    sudo cp @"$d" $LOCATION_DASHBOARDS
   done
-}
-
-create_dashboard(){
-  apiurl="$URL$DASHBOARD"
-  for d in "${DASHES[@]}"; do
-  curl -X POST $apiurl -H "$CONTENT" -d @"$d"
-  done
+  sudo cp $DASHSOURCES $LOCATION_DASHBOARDS
 }
 
 create_datasource
 create_dashboard
-

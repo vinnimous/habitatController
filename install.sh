@@ -66,7 +66,6 @@ install_grafana() {
   fi
 }
 
-
 grafana_deb() {
   wget https://dl.grafana.com/oss/release/grafana-rpi_7.3.4_armhf.deb
   sudo dpkg -i grafana-rpi_7.3.4_armhf.deb
@@ -113,7 +112,10 @@ setup_mysql() {
 #Trying to create a cronjob
 create_cron() {
   echo "Trying to create a cronjob"
-  (crontab -l; echo "$CRONJOB")|awk '!x[$0]++'|crontab -
+  (
+    crontab -l
+    echo "$CRONJOB"
+  ) | awk '!x[$0]++' | crontab -
   if crontab -l | grep -q "$CRONJOB"; then
     echo "Successfully created cronjob"
   else
@@ -125,7 +127,7 @@ create_cron() {
 #If the previous cronjob creation fails it will attempt to create it as a schedule
 create_schedule() {
   sudo touch /etc/cron.d/schedule
-  sudo echo "$CRONJOB" > $TMPFILE
+  sudo echo "$CRONJOB" >$TMPFILE
   sudo chmod 600 $TMPFILE
 }
 
@@ -148,5 +150,6 @@ setup_mysql
 install_grafana
 create_cron
 start_grafana
+check_grafana
 configure_grafana
 restart
