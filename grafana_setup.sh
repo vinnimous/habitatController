@@ -22,7 +22,7 @@ create_datasource() {
 
 create_dashboard() {
   for d in "${DASHBOARDS[@]}"; do
-    sudo cp @"$d" $LOCATION_DASHBOARDS
+    sudo cp "$d" $LOCATION_DASHBOARDS
   done
   sudo cp $DASHSOURCES $LOCATION_DASHBOARDS
 }
