@@ -9,14 +9,13 @@ ERROR_MOD_NOT_FOUND="Undetected Raspberry Pi Model"
 CRONJOB="@reboot python3 /home/pi/habitatController/main.py"
 CRONFILE="/var/spool/cron/crontabs/pi"
 CRONCAT="sudo cat $CRONFILE"
-TMPFILE="/tmp/tmpCronJobs.txt"
+TMPFILE="/etc/cron.d/schedule"
 GRAFANA_ENABLE="sudo /bin/systemctl enable grafana-server"
 GRAFANA_START="sudo /bin/systemctl start grafana-server"
-GRAFANA_ENABLED="Loaded: loaded (/lib/systemd/system/grafana-server.service; enabled"
-GRAFANA_RUNNING="Active: active (running)"
-IS_GRAFANA_ENABLED=false
+GRAFANA_RUNNING="active"
 IS_GRAFANA_RUNNING=false
 
+#Determine Raspberry Pi architecture to select correct packages
 get_arch() {
   echo "Detecting Raspberry Pi type"
   if grep -q "$RASP_MOD_A" "$MODEL_FILE"; then
@@ -30,27 +29,32 @@ get_arch() {
   fi
 }
 
+#Updating
 updating() {
   echo "Updating libraries"
   sudo apt-get update -y
 }
 
-install_requirements() {
-  echo "Installing requirements"
-  pip3 install -r requirements.txt
-}
-
+#Installing basic requirements
 install_basics() {
   echo "Installing some basic build tools"
   sudo apt-get install -y build-essential python-dev python-smbus python3-pip
 }
 
+#Installing Python specific requirements
+install_requirements() {
+  echo "Installing requirements"
+  pip3 install -r requirements.txt
+}
+
+#Installing MySQL
 install_mysql() {
   echo "Installing items for mySql"
   sudo apt-get install -y apt-transport-https software-properties-common wget mariadb-server adduser libfontconfig1
   sudo apt-get install -y python-mysqldb
 }
 
+#Selecing which Grafana package to install based on Raspberry Pi architecture
 install_grafana() {
   echo "Installing Grafana"
   if $IS_TYPE_B; then
@@ -62,10 +66,10 @@ install_grafana() {
   fi
 }
 
+
 grafana_deb() {
   wget https://dl.grafana.com/oss/release/grafana-rpi_7.3.4_armhf.deb
   sudo dpkg -i grafana-rpi_7.3.4_armhf.deb
-  #https://grafana.com/docs/grafana/latest/installation/debian/
 }
 
 grafana_apt() {
@@ -75,6 +79,7 @@ grafana_apt() {
   sudo apt-get install -y grafana
 }
 
+#Starting Grafana
 start_grafana() {
   echo "Starting Grafana"
   if $IS_TYPE_B; then
@@ -88,31 +93,44 @@ start_grafana() {
   fi
 }
 
-#check_grafana() {
-#  if grep -q $GRAFANA_ENABLED "$MODEL_FILE"; then
-#    echo "Model A detected"
-#    IS_TYPE_A=true
-#  elif grep -q $RASP_MOD_B "$MODEL_FILE"; then
-#    echo "Model B detected"
-#    IS_TYPE_B=true
-#  else
-#    echo "Undetected Raspberry Pi Model"
-#  fi
-#}
+#Checking to see if Grafana is properly running
+check_grafana() {
+  if systemctl is-active grafana-server | grep -q "$GRAFANA_RUNNING"; then
+    echo "Grafana is currently running"
+    IS_GRAFANA_RUNNING=true
+  else
+    echo "Grafana may have failed, please confirm manually"
+  fi
+}
 
+#Requires minor interaction and to complete
 setup_mysql() {
   echo "Setting up mySql"
   sudo mysql_secure_installation
   sudo mysql -u root -p <createDB.sql
 }
 
+#Trying to create a cronjob
 create_cron() {
   echo "Trying to create a cronjob"
-  #  crontab -l >$TMPFILE
-  #  echo "$CRONJOB" >>$TMPFILE
-  #  cron $TMPFILE
-  #  rm $TMPFILE
-  echo "$CRONJOB" | sudo tee -a $CRONFILE
+  (crontab -l; echo "$CRONJOB")|awk '!x[$0]++'|crontab -
+  if crontab -l | grep -q "$CRONJOB"; then
+    echo "Successfully created cronjob"
+  else
+    echo "Cronjob creation failed, attempting schedule"
+    create_schedule
+  fi
+}
+
+#If the previous cronjob creation fails it will attempt to create it as a schedule
+create_schedule() {
+  sudo touch /etc/cron.d/schedule
+  sudo echo "$CRONJOB" > $TMPFILE
+  sudo chmod 600 $TMPFILE
+}
+
+configure_grafana() {
+  bash grafana_setup.sh
 }
 
 restart() {
@@ -130,4 +148,5 @@ setup_mysql
 install_grafana
 create_cron
 start_grafana
+configure_grafana
 restart
