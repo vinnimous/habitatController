@@ -84,13 +84,13 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": false,
-          "rawSql": "SELECT\n  DATE AS \"time\",\n  TEMP_SET\nFROM habitatHistoryTable\nWHERE\n  $__timeFilter(DATE)\nORDER BY DATE",
+          "rawSql": "SELECT\n  DATE AS \"time\",\n  TEMP_ACT\nFROM habitatHistoryTable\nWHERE\n  $__timeFilter(DATE)\nORDER BY DATE",
           "refId": "A",
           "select": [
             [
               {
                 "params": [
-                  "TEMP_SET"
+                  "TEMP_ACT"
                 ],
                 "type": "column"
               }
@@ -191,6 +191,7 @@
       "type": "gauge"
     }
   ],
+  "refresh": "5s",
   "schemaVersion": 30,
   "style": "dark",
   "tags": [],
