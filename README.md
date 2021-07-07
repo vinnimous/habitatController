@@ -21,6 +21,13 @@ So what makes this one special?
 
 All prerequisites and needed packages will be installed.
 
+### Relay connections
+
+- Standard light = 17
+- UVB light = 22
+- Night light = 23
+- Heater = 27
+
 ## Enable the following
 
     sudo raspi-config

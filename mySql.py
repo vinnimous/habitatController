@@ -16,7 +16,7 @@ def read_db_config(filename='config.ini', section='mysql'):
     parser.read(path.join(path.dirname(path.abspath(__file__)), filename))
 
     # get section, default to mysql
-    db = {}
+    db = []
     if parser.has_section(section):
         items = parser.items(section)
         for item in items:
