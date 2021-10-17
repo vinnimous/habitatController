@@ -10,9 +10,7 @@ pipeline {
         }
         stage("SonarQube quality gate") {
             steps {
-                withSonarQubeEnv(installationName: 'SonarQube', credentialsId: 'sonarqube-jenkins') {
-                    waitForQualityGate abortPipeline: true
-                }
+                waitForQualityGate abortPipeline: true
             }
         }
     }
