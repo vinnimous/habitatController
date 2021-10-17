@@ -3,8 +3,8 @@ pipeline {
     stages {
         stage('SonarQube analysis') {
             steps {
-                withSonarQubeEnv(installationName: 'SonarQube', credentialsId: 'sonarqube-jenkins') {
-                    sh '''${SONAR_SCANNER} -Dproject.settings=sonar-project.properties'''
+                withSonarQubeEnv(installationName: 'SonarQube', credentialsId: 'sonarqube') {
+                    sh '''${SONAR_SCANNER} -Dproject.settings=sonar-project.properties -Dsonar.branch.name=${BRANCH_NAME}'''
                 }
             }
         }
