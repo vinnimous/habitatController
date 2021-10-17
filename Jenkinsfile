@@ -4,7 +4,7 @@ pipeline {
         stage('SonarQube analysis') {
             steps {
                 withSonarQubeEnv(installationName: 'SonarQube', credentialsId: 'sonarqube-jenkins') {
-                    sh '''$SCANNER_HOME/bin/sonar-scanner'''
+                    sh '''${SONAR-SCANNER} -Dproject.settings=sonar-project.properties'''
                 }
             }
         }
