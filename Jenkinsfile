@@ -6,6 +6,7 @@ pipeline {
                 withSonarQubeEnv(installationName: 'SonarQube', credentialsId: 'sonarqube-jenkins') {
                     sh '''$SCANNER_HOME/bin/sonar-scanner'''
                 }
+            }
         }
         stage("SonarQube quality gate") {
             steps {
