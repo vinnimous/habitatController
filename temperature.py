@@ -112,6 +112,10 @@ def control_heat():
         break
 
 
+def temp_gradiant():
+    temp_diff = summer_day-summer_night
+    time_diff = mapSun.noon-datetime.datetime.now()
+
 def control_elements():
     global rest_count
     check_temp()
