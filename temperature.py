@@ -31,15 +31,15 @@ winter = "winter"
 
 cycle = "unknown"
 
-spring_day = 102
-summer_day = 105
-autumn_day = 102
-winter_day = 100
-spring_night = 79
-summer_night = 80
-autumn_night = 79
-winter_night = 79
-fail_safe = 75
+spring_day = 98
+summer_day = 100
+autumn_day = 97
+winter_day = 95
+spring_night = 74
+summer_night = 75
+autumn_night = 73
+winter_night = 72
+fail_safe = 65
 temp_set = fail_safe
 temp_rest = 5
 rest_count = 0
