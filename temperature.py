@@ -58,13 +58,14 @@ def manage(tod):
 
 def find_season(tod):
     global season, cycle
-    if (datetime.datetime.now().strftime("%m-%d")) > winter_season:
+    date_now = datetime.datetime.now().strftime("%m-%d")
+    if date_now > winter_season:
         season = winter
-    elif (datetime.datetime.now().strftime("%m-%d")) > autumn_season:
+    elif date_now > autumn_season:
         season = autumn
-    elif (datetime.datetime.now().strftime("%m-%d")) > summer_season:
+    elif date_now > summer_season:
         season = summer
-    elif (datetime.datetime.now().strftime("%m-%d")) > spring_season:
+    elif date_now > spring_season:
         season = spring
     else:
         season = winter
@@ -113,14 +114,16 @@ def control_heat():
 
 
 def temp_gradiant():
-    temp_diff = summer_day-summer_night
-    time_diff = mapSun.noon-datetime.datetime.now()
+    temp_diff = summer_day - summer_night
+    time_diff = mapSun.noon - datetime.datetime.now()
+
 
 def control_elements():
     global rest_count
     check_temp()
-    if t_hot < fail_safe or t_hot < temp_set - 5:
-        relay.emergency_heat()
+    if datetime.datetime.now > mapSun.noon:
+        if t_hot < fail_safe or t_hot < temp_set - 5:
+            relay.emergency_heat()
     elif t_hot < temp_set:
         relay.heater_on()
     else:
@@ -132,7 +135,7 @@ def control_elements():
 def check_temp():
     global h_hot, t_hot, h_cold, t_cold
     try:
-        t_hot = adafruit_mcp9808.MCP9808(busio.I2C(board.SCL, board.SDA)).temperature * 9 / 5 + 32
+        t_hot = (adafruit_mcp9808.MCP9808(busio.I2C(board.SCL, board.SDA)).temperature * (9 / 5)) + 32
     except Exception as e:
         logger.error(e)
 
