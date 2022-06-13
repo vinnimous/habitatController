@@ -17,7 +17,6 @@ dusk = 0
 
 configs = "config.ini"
 section = "location"
-location = {}
 
 
 def new_day():
