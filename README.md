@@ -10,6 +10,8 @@ So what makes this one special?
 - Completely contained historical data and reporting through MYSQL and Grafana
 - Very easy to build and easily replaceable parts
 
+Temperature range information based on https://cvm.ncsu.edu/wp-content/uploads/2016/12/Caring-for-your-Bearded-Dragon.pdf#:~:text=Temperature%3A%20Daytime%20maintain%20between%2075,hot%20ends%20of%20the%20enclosure.
+
 ## Parts list
 
 - Raspberry Pi (3 or greater is recommended however it should work with a Zero)
