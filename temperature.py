@@ -121,7 +121,7 @@ def temp_gradiant():
 def control_elements():
     global rest_count
     check_temp()
-    if datetime.datetime.now > mapSun.noon:
+    if datetime.datetime.now() > mapSun.noon:
         if t_hot < fail_safe or t_hot < temp_set - 5:
             relay.emergency_heat()
     elif t_hot < temp_set:
