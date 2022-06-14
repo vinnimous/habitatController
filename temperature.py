@@ -126,6 +126,8 @@ def control_elements():
             relay.emergency_heat()
     elif t_hot < temp_set:
         relay.heater_on()
+    elif t_hot > temp_set:
+        relay.heater_off()
     else:
         relay.heater_off()
     temp_status()
@@ -137,7 +139,7 @@ def check_temp():
     try:
         t_hot = (adafruit_mcp9808.MCP9808(busio.I2C(board.SCL, board.SDA)).temperature * (9 / 5)) + 32
     except Exception as e:
-        logger.error(e)
+        logger.error("Failed to detect temperature: {}".format(e))
 
 
 def check_relays():
@@ -160,7 +162,7 @@ def check_relays():
         else:
             night_status = 1
     except Exception as e:
-        logger.error(e)
+        logger.error("Failed to control relays: {}".format(e))
 
 
 def temp_status():
@@ -171,7 +173,7 @@ def temp_status():
             insert(datetime.datetime.now(), cycle, season, temp_set, t_hot, uvb_status, day_status,
                    night_status, heater_status)
         except Exception as e:
-            logger.exception(e)
+            logger.error("Failed to insert temperature data: {}".format(e))
     logger.debug("Current time: {} Cycle: {} Season: {} Temp_Set {} Temp_Read {} UVB {} Day {} Night {} Heat {}  ".
                  format(datetime.datetime.now(), cycle, season, temp_set, t_hot, uvb_status, day_status,
                         night_status, heater_status))
