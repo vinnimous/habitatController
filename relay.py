@@ -22,12 +22,12 @@ def setup():
     GPIO.setup(pin_night, GPIO.OUT, initial=GPIO.HIGH)
     logger.debug(lightLog)
 
+
 def day_light():
     GPIO.output(pin_light, GPIO.LOW)  # Turn on light bulb
     GPIO.output(pin_uvb, GPIO.LOW)  # Turn on UVB light
     GPIO.output(pin_night, GPIO.HIGH)  # Turn off night light
     logger.debug(lightLog)
-
 
 
 def night_light():
@@ -37,7 +37,6 @@ def night_light():
     logger.debug(lightLog)
 
 
-
 def emergency_heat():
     GPIO.output(pin_light, GPIO.LOW)  # Turn on light bulb
     GPIO.output(pin_uvb, GPIO.LOW)  # Turn on UVB light
@@ -45,7 +44,7 @@ def emergency_heat():
     GPIO.output(pin_night, GPIO.LOW)  # Turn on night light
     logger.debug(lightLog)
 
-    
+
 def all_off():
     GPIO.output(pin_light, GPIO.HIGH)  # Turn off light bulb
     GPIO.output(pin_uvb, GPIO.HIGH)  # Turn off UVB light
@@ -62,4 +61,3 @@ def heater_on():
 def heater_off():
     GPIO.output(pin_heater, GPIO.HIGH)  # Turn off heater bulb
     logger.debug(lightLog)
-

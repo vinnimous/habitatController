@@ -48,7 +48,7 @@ def insert(date, tod, season, temp_set, temp_act, light_uvb, light_day, light_ni
         cursor.execute(sql)
         db.commit()
     except Exception as e:
-        logger.error(e)
+        logger.error("Failed to insert record from table: {}".format(e))
         db.rollback()
     finally:
         cursor.close()
@@ -60,13 +60,19 @@ def delete_old():
     db = pymysql.connect(**db_config)
     cursor = db.cursor()
     del_stmt = "DELETE FROM habitatHistoryTable WHERE DATE < NOW() - interval %s DAY;"
+    find_old = "SELECT * FROM habitatHistoryTable WHERE DATE < NOW() - interval %s DAY;"
     adr = (sqlArchiveLimit,)
     try:
-        cursor.execute(del_stmt, adr)
-        db.commit()
-        logger.debug(cursor.rowcount, " records deleted")
+        cursor.execute(find_old, adr)
+        records = cursor.fetchall()
+        if len(records) > 0:
+            cursor.execute(del_stmt, adr)
+            db.commit()
+            logger.debug(cursor.rowcount, " records deleted")
+        else:
+            logger.debug("No old records exsist")
     except Exception as e:
-        logger.error(e)
+        logger.error("Failed to delete record from table: {}".format(e))
         db.rollback()
     finally:
         cursor.close()
