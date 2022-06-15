@@ -3,23 +3,36 @@
     "list": [
       {
         "builtIn": 1,
-        "datasource": "-- Grafana --",
+        "datasource": {
+          "type": "datasource",
+          "uid": "grafana"
+        },
         "enable": true,
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
         "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
         "type": "dashboard"
       }
     ]
   },
   "editable": true,
-  "gnetId": null,
+  "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": 1,
   "links": [],
+  "liveNow": false,
   "panels": [
     {
-      "datasource": null,
+      "datasource": {
+        "type": "mysql",
+        "uid": "jfz6uuzgk"
+      },
       "description": "",
       "fieldConfig": {
         "defaults": {
@@ -66,6 +79,7 @@
       },
       "id": 2,
       "options": {
+        "orientation": "auto",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -77,7 +91,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.0.4",
+      "pluginVersion": "8.5.5",
       "targets": [
         {
           "format": "time_series",
@@ -112,7 +126,10 @@
       "type": "gauge"
     },
     {
-      "datasource": null,
+      "datasource": {
+        "type": "mysql",
+        "uid": "jfz6uuzgk"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -145,6 +162,7 @@
       },
       "id": 6,
       "options": {
+        "orientation": "auto",
         "reduceOptions": {
           "calcs": [
             "last"
@@ -156,7 +174,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.0.4",
+      "pluginVersion": "8.5.5",
       "targets": [
         {
           "format": "time_series",
@@ -192,7 +210,7 @@
     }
   ],
   "refresh": "5s",
-  "schemaVersion": 30,
+  "schemaVersion": 36,
   "style": "dark",
   "tags": [],
   "templating": {
@@ -204,7 +222,8 @@
   },
   "timepicker": {},
   "timezone": "utc",
-  "title": "Current",
+  "title": "Default",
   "uid": "eCpkqXzRz",
-  "version": 2
+  "version": 5,
+  "weekStart": ""
 }
