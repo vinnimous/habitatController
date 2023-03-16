@@ -1,16 +1,11 @@
+@Library("security_stages") _
+
 pipeline {
     agent any
     stages {
-        stage('SonarQube analysis') {
+        stage ("Attempting security stages") {
             steps {
-                withSonarQubeEnv(installationName: 'SonarQube', credentialsId: 'sonarqube') {
-                    sh '''${SONAR_SCANNER} -Dproject.settings=sonar-project.properties'''
-                }
-            }
-        }
-        stage("SonarQube quality gate") {
-            steps {
-                waitForQualityGate abortPipeline: true
+                shared()
             }
         }
     }

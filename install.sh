@@ -66,11 +66,13 @@ install_grafana() {
   fi
 }
 
+#Grafana installation for arm
 grafana_deb() {
   wget https://dl.grafana.com/oss/release/grafana-rpi_7.3.4_armhf.deb
   sudo dpkg -i grafana-rpi_7.3.4_armhf.deb
 }
 
+#Grafana installation for apt
 grafana_apt() {
   wget -q -O - https://packages.grafana.com/gpg.key | sudo apt-key add -
   echo "deb https://packages.grafana.com/oss/deb stable main" | sudo tee -a /etc/apt/sources.list.d/grafana.list
