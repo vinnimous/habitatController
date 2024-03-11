@@ -3,6 +3,17 @@
 pipeline {
     agent any
     stages {
+        stage('Setup') { // Install any dependencies you need to perform testing
+            steps {
+                script {
+                sh """
+                python3 -m venv ./venv
+                . ./venv/bin/activate
+                pip install -r requirements.txt
+                """
+                }
+            }
+        }
         stage ("Attempting security stages") {
             steps {
                 shared()
