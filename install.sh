@@ -38,13 +38,17 @@ updating() {
 #Installing basic requirements
 install_basics() {
   echo "Installing some basic build tools"
-  sudo apt-get install -y build-essential python-dev python-smbus python3-pip
+  sudo apt-get install -y build-essential python-dev python-smbus python3-pip python3-venv
 }
 
 #Installing Python specific requirements
 install_requirements() {
-  echo "Installing requirements"
-  pip3 install -r requirements.txt
+  echo "Setting up Python virtual environment"
+  python3 -m venv venv  # Create a virtual environment named 'venv'
+  source venv/bin/activate  # Activate the virtual environment
+  echo "Installing requirements in the virtual environment"
+  pip install -r requirements.txt  # Install packages in the virtual environment
+  deactivate  # Deactivate the virtual environment
 }
 
 #Installing MySQL

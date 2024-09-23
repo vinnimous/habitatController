@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 
+import sys
 import datetime
 import logging.config
 import time
@@ -11,6 +12,11 @@ import mapSun
 import relay
 
 from temperature import manage
+
+# Check if running in a virtual environment
+if not hasattr(sys, 'real_prefix') and not (hasattr(sys, 'base_prefix') and sys.base_prefix != sys.prefix):
+    print("This script must be run within a virtual environment.")
+    sys.exit(1)
 
 log_file_path = path.join(path.dirname(path.abspath(__file__)), 'logging.conf')
 
