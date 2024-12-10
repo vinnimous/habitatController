@@ -31,10 +31,10 @@ winter = "winter"
 
 cycle = "unknown"
 
-spring_day = 98
-summer_day = 100
-autumn_day = 97
-winter_day = 95
+spring_day = 110
+summer_day = 115
+autumn_day = 105
+winter_day = 100
 spring_night = 74
 summer_night = 75
 autumn_night = 73
@@ -45,10 +45,10 @@ temp_rest = 5
 rest_count = 0
 rest_limit = 12
 
-spring_season = "03-01"
-summer_season = "06-01"
-autumn_season = "09-01"
-winter_season = "12-01"
+spring_season = "03-21"
+summer_season = "06-21"
+autumn_season = "09-23"
+winter_season = "12-21"
 
 
 def manage(tod):
@@ -59,13 +59,13 @@ def manage(tod):
 def find_season(tod):
     global season, cycle
     date_now = datetime.datetime.now().strftime("%m-%d")
-    if date_now > winter_season:
+    if date_now >= winter_season:
         season = winter
-    elif date_now > autumn_season:
+    elif date_now >= autumn_season:
         season = autumn
-    elif date_now > summer_season:
+    elif date_now >= summer_season:
         season = summer
-    elif date_now > spring_season:
+    elif date_now >= spring_season:
         season = spring
     else:
         season = winter
