@@ -136,7 +136,11 @@ def control_elements():
 def check_temp():
     global h_hot, t_hot, h_cold, t_cold
     try:
-        t_hot = (adafruit_mcp9808.MCP9808(busio.I2C(board.SCL, board.SDA)).temperature * (9 / 5)) + 32
+        i2c = busio.I2C(board.SCL, board.SDA)
+        sensor_hot = adafruit_mcp9808.MCP9808(i2c, address=0x18)
+        sensor_cold = adafruit_mcp9808.MCP9808(i2c, address=0x19)
+        t_hot = (sensor_hot.temperature * (9 / 5)) + 32
+        t_cold = (sensor_cold.temperature * (9 / 5)) + 32
     except Exception as e:
         logger.error("Failed to detect temperature: {}".format(e))
 
@@ -169,10 +173,11 @@ def temp_status():
     if upload_temps:
         from mySql import insert
         try:
-            insert(datetime.datetime.now(), cycle, season, temp_set, t_hot, uvb_status, day_status,
+            insert(datetime.datetime.now(), cycle, season, temp_set, t_hot, t_cold, uvb_status, day_status,
                    night_status, heater_status)
         except Exception as e:
             logger.error("Failed to insert temperature data: {}".format(e))
     logger.debug("Current time: {} Cycle: {} Season: {} Temp_Set {} Temp_Read {} UVB {} Day {} Night {} Heat {}  ".
-                 format(datetime.datetime.now(), cycle, season, temp_set, t_hot, uvb_status, day_status,
+                 format(datetime.datetime.now(), cycle, season, temp_set, t_hot, t_cold, uvb_status, day_status,
                         night_status, heater_status))
+

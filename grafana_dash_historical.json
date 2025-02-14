@@ -97,19 +97,19 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": false,
-          "rawSql": "SELECT\n  DATE AS \"time\",\n  TEMP_ACT AS \"Actual temperature\",\n  TEMP_SET AS \"Set temperature\"\nFROM habitatHistoryTable\nWHERE\n  $__timeFilter(DATE)\nORDER BY DATE",
+          "rawSql": "SELECT\n  DATE AS \"time\",\n  TEMP_ACT_H AS \"Actual hotside temperature\",\n  TEMP_SET AS \"Set temperature\"\nFROM habitatHistoryTable\nWHERE\n  $__timeFilter(DATE)\nORDER BY DATE",
           "refId": "A",
           "select": [
             [
               {
                 "params": [
-                  "TEMP_ACT"
+                  "TEMP_ACT_H"
                 ],
                 "type": "column"
               },
               {
                 "params": [
-                  "Actual temperature"
+                  "Actual hotside temperature"
                 ],
                 "type": "alias"
               }

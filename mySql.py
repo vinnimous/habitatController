@@ -27,7 +27,7 @@ def read_db_config(filename='config.ini', section='mysql'):
     return db
 
 
-def insert(date, tod, season, temp_set, temp_act, light_uvb, light_day, light_night, heat_bulb):
+def insert(date, tod, season, temp_set, temp_act_h, temp_act_c, light_uvb, light_day, light_night, heat_bulb):
     check_relays()
     db_config = read_db_config()
     db = pymysql.connect(**db_config)
@@ -37,13 +37,14 @@ def insert(date, tod, season, temp_set, temp_act, light_uvb, light_day, light_ni
         TOD, \
         SEASON, \
         TEMP_SET, \
-        TEMP_ACT, \
+        TEMP_ACT_H, \
+        TEMP_ACT_C, \
         LIGHT_UVB, \
         LIGHT_DAY, \
         LIGHT_NIGHT, \
         HEAT_BULB \
     ) VALUES ( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')" % \
-          (date, tod, season, temp_set, temp_act, light_uvb, light_day, light_night, heat_bulb)
+          (date, tod, season, temp_set, temp_act_h, temp_act_c, light_uvb, light_day, light_night, heat_bulb)
     try:
         cursor.execute(sql)
         db.commit()

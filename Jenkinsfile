@@ -14,10 +14,26 @@ pipeline {
                 }
             }
         }
+        stage('Test') { // Run the test scripts
+            steps {
+                script {
+                sh """
+                . ./venv/bin/activate
+                pytest --cov=habitatController --cov-report=xml
+                """
+                }
+            }
+        }
         stage ("Attempting security stages") {
             steps {
                 shared()
             }
+        }
+    }
+    post {
+        always {
+            junit 'test-reports/*.xml'
+            publishCoverage adapters: [coberturaAdapter('coverage.xml')]
         }
     }
 }
