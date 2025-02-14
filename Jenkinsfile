@@ -10,6 +10,7 @@ pipeline {
                 python3 -m venv ./venv
                 . ./venv/bin/activate
                 pip install -r requirements.txt
+                mkdir -p test-reports
                 """
                 }
             }
@@ -32,6 +33,15 @@ pipeline {
     }
     post {
         always {
+            // Debug steps to check the existence and contents of the test report file
+            script {
+                sh """
+                echo "Checking if test report exists:"
+                ls -l test-reports/results.xml
+                echo "Displaying contents of the test report:"
+                cat test-reports/results.xml
+                """
+            }
             junit 'test-reports/results.xml'
             publishCoverage adapters: [coberturaAdapter('coverage.xml')]
         }
