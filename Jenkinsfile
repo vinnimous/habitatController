@@ -9,7 +9,7 @@ pipeline {
                 sh """
                 python3 -m venv ./venv
                 . ./venv/bin/activate
-                pip install -r requirements.txt
+                pip install -r requirements.txt pytest
                 mkdir -p test-reports
                 """
                 }
@@ -20,6 +20,7 @@ pipeline {
                 script {
                 sh """
                 . ./venv/bin/activate
+                which pytest
                 pytest --cov=habitatController --junitxml=test-reports/results.xml --cov-report=xml
                 """
                 }
