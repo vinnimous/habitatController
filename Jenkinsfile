@@ -19,7 +19,7 @@ pipeline {
                 script {
                 sh """
                 . ./venv/bin/activate
-                pytest --cov=habitatController --cov-report=xml
+                pytest --cov=habitatController --junitxml=test-reports/results.xml --cov-report=xml
                 """
                 }
             }
@@ -32,7 +32,7 @@ pipeline {
     }
     post {
         always {
-            junit 'test-reports/*.xml'
+            junit 'test-reports/results.xml'
             publishCoverage adapters: [coberturaAdapter('coverage.xml')]
         }
     }
