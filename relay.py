@@ -13,7 +13,8 @@ pin_uvb = 22
 pin_night = 23
 pin_bubbler = 24
 
-relayLog = "\"Relays: {} UVB: {} Heat: {} Night: {} Bubbler: {}\"".format(GPIO.input(pin_light), GPIO.input(pin_uvb), GPIO.input(pin_heater), GPIO.input(pin_night), GPIO.input(pin_bubbler))
+relayLog = "\"Relays: {} UVB: {} Heat: {} Night: {} Bubbler: {}\"" \
+           ".format(GPIO.input(pin_light), (GPIO.input(pin_uvb)), GPIO.input(pin_heater), GPIO.input(pin_night), GPIO.input(pin_bubbler))"(pin_light, pin_uvb, pin_heater, pin_night, pin_bubbler)
 
 
 def setup():
