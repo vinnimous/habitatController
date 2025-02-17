@@ -6,8 +6,8 @@ TOKEN="Authorization: Bearer "
 CONTENT="Content-Type: application/json"
 ACCEPT="Accept: application/json"
 
-DATASOURCES="grafana_datasources.yaml"
-DASHSOURCES="grafana_dashboards.yaml"
+DATASOURCES="grafana_datasources.yml"
+DASHSOURCES="grafana_dashboards.yml"
 
 LOCATION_DATASOURCES="/etc/grafana/provisioning/datasources/"
 LOCATION_DASHBOARDS="/etc/grafana/provisioning/dashboards/"

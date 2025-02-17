@@ -6,7 +6,7 @@ MODEL_FILE="/sys/firmware/devicetree/base/model"
 IS_TYPE_A=false
 IS_TYPE_B=false
 ERROR_MOD_NOT_FOUND="Undetected Raspberry Pi Model"
-CRONJOB="@reboot /home/pi/venv/bin/python3 /home/pi/habitatController/main.py"
+CRONJOB="@reboot /home/pi/habitatController/venv/bin/python3 /home/pi/habitatController/main.py"
 CRONFILE="/var/spool/cron/crontabs/pi"
 CRONCAT="sudo cat $CRONFILE"
 TMPFILE="/etc/cron.d/schedule"
@@ -55,7 +55,7 @@ install_requirements() {
 install_mysql() {
   echo "Installing items for mySql"
   sudo apt-get install -y apt-transport-https software-properties-common wget mariadb-server adduser libfontconfig1
-  sudo apt-get install -y python3-mysqldb
+  sudo apt-get install -y python3-mysqldb expect
 }
 
 #Selecing which Grafana package to install based on Raspberry Pi architecture
@@ -111,7 +111,30 @@ check_grafana() {
 #Requires minor interaction and to complete
 setup_mysql() {
   echo "Setting up mySql"
-  sudo mysql_secure_installation
+  expect <<EOF
+spawn sudo mysql_secure_installation
+
+# Expect prompts and send responses to avoid interaction
+expect "Enter current password for root (enter for none):"
+send "\r"  # No password for the current root user
+
+expect "Set root password?"
+send "N\r"  # No, root password left empty
+
+expect "Remove anonymous users?"
+send "Y\r"  # Yes, remove anonymous users
+
+expect "Disallow root login remotely?"
+send "N\r"  # No, allow root login remotely
+
+expect "Remove test database and access to it?"
+send "Y\r"  # Yes, remove the test database
+
+expect "Reload privilege tables now?"
+send "Y\r"  # Yes, reload the privilege tables
+
+expect eof
+EOF
   sudo mysql -u root -p <createDB.sql
 }
 

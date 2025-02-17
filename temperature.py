@@ -146,7 +146,7 @@ def check_temp():
 
 
 def check_relays():
-    global uvb_status, day_status, night_status, heater_status
+    global uvb_status, day_status, night_status, heater_status, bubbler_status
     try:
         if GPIO.input(relay.pin_heater):
             heater_status = 0
@@ -164,6 +164,10 @@ def check_relays():
             night_status = 0
         else:
             night_status = 1
+        if GPIO.input(relay.pin_bubbler):
+            bubbler_status = 0
+        else:
+            bubbler_status = 1
     except Exception as e:
         logger.error("Failed to control relays: {}".format(e))
 
@@ -174,10 +178,10 @@ def temp_status():
         from mySql import insert
         try:
             insert(datetime.datetime.now(), cycle, season, temp_set, t_hot, t_cold, uvb_status, day_status,
-                   night_status, heater_status)
+                   night_status, heater_status, bubbler_status)
         except Exception as e:
             logger.error("Failed to insert temperature data: {}".format(e))
-    logger.debug("Current time: {} Cycle: {} Season: {} Temp_Set {} Temp_Read {} UVB {} Day {} Night {} Heat {}  ".
+    logger.debug("Current time: {} Cycle: {} Season: {} Temp_Set {} Temp_Hot {} Temp_Cold {} UVB {} Day {} Night {} Heat {} Bubbler {}".
                  format(datetime.datetime.now(), cycle, season, temp_set, t_hot, t_cold, uvb_status, day_status,
-                        night_status, heater_status))
+                        night_status, heater_status, bubbler_status))
 
