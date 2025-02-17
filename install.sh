@@ -38,7 +38,7 @@ updating() {
 #Installing basic requirements
 install_basics() {
   echo "Installing some basic build tools"
-  sudo apt-get install -y build-essential python-dev python-smbus python3-pip python3-venv
+  sudo apt-get install -y build-essential python3-dev python3-smbus python3-pip python3-venv
 }
 
 #Installing Python specific requirements
@@ -55,7 +55,7 @@ install_requirements() {
 install_mysql() {
   echo "Installing items for mySql"
   sudo apt-get install -y apt-transport-https software-properties-common wget mariadb-server adduser libfontconfig1
-  sudo apt-get install -y python-mysqldb
+  sudo apt-get install -y python3-mysqldb
 }
 
 #Selecing which Grafana package to install based on Raspberry Pi architecture
