@@ -15,7 +15,7 @@ GRAFANA_START="sudo /bin/systemctl start grafana-server"
 GRAFANA_RUNNING="active"
 IS_GRAFANA_RUNNING=false
 
-#Determine Raspberry Pi architecture to select correct packages
+# Determine Raspberry Pi architecture to select correct packages
 get_arch() {
   echo "Detecting Raspberry Pi type"
   if grep -q "$RASP_MOD_A" "$MODEL_FILE"; then
@@ -29,19 +29,19 @@ get_arch() {
   fi
 }
 
-#Updating
+# Update package lists
 updating() {
   echo "Updating libraries"
   sudo apt-get update -y
 }
 
-#Installing basic requirements
+# Install basic build tools and Python dependencies
 install_basics() {
   echo "Installing some basic build tools"
   sudo apt-get install -y build-essential python3-dev python3-smbus python3-pip python3-venv
 }
 
-#Installing Python specific requirements
+# Set up Python virtual environment and install requirements
 install_requirements() {
   echo "Setting up Python virtual environment"
   python3 -m venv venv  # Create a virtual environment named 'venv'
@@ -51,14 +51,14 @@ install_requirements() {
   deactivate  # Deactivate the virtual environment
 }
 
-#Installing MySQL
+# Install MySQL and related packages
 install_mysql() {
-  echo "Installing items for mySql"
+  echo "Installing items for MySQL"
   sudo apt-get install -y apt-transport-https software-properties-common wget mariadb-server adduser libfontconfig1
   sudo apt-get install -y python3-mysqldb expect
 }
 
-#Selecing which Grafana package to install based on Raspberry Pi architecture
+# Select which Grafana package to install based on Raspberry Pi architecture
 install_grafana() {
   echo "Installing Grafana"
   if $IS_TYPE_B; then
@@ -70,13 +70,13 @@ install_grafana() {
   fi
 }
 
-#Grafana installation for arm
+# Grafana installation for arm architecture
 grafana_deb() {
   wget https://dl.grafana.com/oss/release/grafana-rpi_7.3.4_armhf.deb
   sudo dpkg -i grafana-rpi_7.3.4_armhf.deb
 }
 
-#Grafana installation for apt
+# Grafana installation using apt
 grafana_apt() {
   wget -q -O - https://packages.grafana.com/gpg.key | sudo apt-key add -
   echo "deb https://packages.grafana.com/oss/deb stable main" | sudo tee -a /etc/apt/sources.list.d/grafana.list
@@ -84,7 +84,7 @@ grafana_apt() {
   sudo apt-get install -y grafana
 }
 
-#Starting Grafana
+# Start Grafana service
 start_grafana() {
   echo "Starting Grafana"
   if $IS_TYPE_B; then
@@ -98,7 +98,7 @@ start_grafana() {
   fi
 }
 
-#Checking to see if Grafana is properly running
+# Check if Grafana is running
 check_grafana() {
   if systemctl is-active grafana-server | grep -q "$GRAFANA_RUNNING"; then
     echo "Grafana is currently running"
@@ -108,9 +108,9 @@ check_grafana() {
   fi
 }
 
-#Requires minor interaction and to complete
+# Set up MySQL with secure installation
 setup_mysql() {
-  echo "Setting up mySql"
+  echo "Setting up MySQL"
   expect <<EOF
 spawn sudo mysql_secure_installation
 
@@ -138,7 +138,7 @@ EOF
   sudo mysql -u root -p <createDB.sql
 }
 
-#Trying to create a cronjob
+# Create a cron job to run the main script at reboot
 create_cron() {
   echo "Trying to create a cronjob"
   (
@@ -153,23 +153,26 @@ create_cron() {
   fi
 }
 
-#If the previous cronjob creation fails it will attempt to create it as a schedule
+# If cron job creation fails, create a schedule
 create_schedule() {
   sudo touch /etc/cron.d/schedule
   sudo echo "$CRONJOB" >$TMPFILE
   sudo chmod 600 $TMPFILE
 }
 
+# Configure Grafana
 configure_grafana() {
   bash grafana_setup.sh
 }
 
+# Clean up and restart the system
 restart() {
-  echo "Removing left overs and restarting"
+  echo "Removing leftovers and restarting"
   sudo apt autoremove -y
   sudo shutdown -r
 }
 
+# Execute the functions in order
 get_arch
 updating
 install_basics
