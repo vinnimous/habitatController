@@ -44,7 +44,6 @@ updating() {
 install_basics() {
   echo -e "${GREEN}Installing some basic build tools${NC}"
   sudo apt-get install -y build-essential python3-dev python3-smbus python3-pip python3-venv
-  sudo apt-get autoremove -y
 }
 
 # Set up Python virtual environment and install requirements
