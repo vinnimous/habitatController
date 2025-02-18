@@ -45,11 +45,6 @@ check_swap_size() {
   fi
 }
 
-increase_swap_size() {
-  sudo sed -i 's/CONF_SWAPSIZE=100/CONF_SWAPSIZE=2048/' /etc/dphys-swapfile
-  sudo systemctl restart dphys-swapfile
-}
-
 check_max_swap_size() {
   current_max_swap=$(grep CONF_MAXSWAP /etc/dphys-swapfile | cut -d'=' -f2)
   if [ -z "$current_max_swap" ] || [ "$current_max_swap" -lt 2048 ]; then
