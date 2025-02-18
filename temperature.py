@@ -21,6 +21,7 @@ heater_status = 0
 uvb_status = 0
 day_status = 0
 night_status = 0
+bubbler_status = 0
 
 season = "unknown"
 
@@ -31,10 +32,10 @@ winter = "winter"
 
 cycle = "unknown"
 
-spring_day = 98
-summer_day = 100
-autumn_day = 97
-winter_day = 95
+spring_day = 110
+summer_day = 115
+autumn_day = 105
+winter_day = 100
 spring_night = 74
 summer_night = 75
 autumn_night = 73
@@ -45,10 +46,10 @@ temp_rest = 5
 rest_count = 0
 rest_limit = 12
 
-spring_season = "03-01"
-summer_season = "06-01"
-autumn_season = "09-01"
-winter_season = "12-01"
+spring_season = "03-21"
+summer_season = "06-21"
+autumn_season = "09-23"
+winter_season = "12-21"
 
 
 def manage(tod):
@@ -59,13 +60,13 @@ def manage(tod):
 def find_season(tod):
     global season, cycle
     date_now = datetime.datetime.now().strftime("%m-%d")
-    if date_now > winter_season:
+    if date_now >= winter_season:
         season = winter
-    elif date_now > autumn_season:
+    elif date_now >= autumn_season:
         season = autumn
-    elif date_now > summer_season:
+    elif date_now >= summer_season:
         season = summer
-    elif date_now > spring_season:
+    elif date_now >= spring_season:
         season = spring
     else:
         season = winter
@@ -136,13 +137,17 @@ def control_elements():
 def check_temp():
     global h_hot, t_hot, h_cold, t_cold
     try:
-        t_hot = (adafruit_mcp9808.MCP9808(busio.I2C(board.SCL, board.SDA)).temperature * (9 / 5)) + 32
+        i2c = busio.I2C(board.SCL, board.SDA)
+        sensor_hot = adafruit_mcp9808.MCP9808(i2c, address=0x18)
+        sensor_cold = adafruit_mcp9808.MCP9808(i2c, address=0x19)
+        t_hot = (sensor_hot.temperature * (9 / 5)) + 32
+        t_cold = (sensor_cold.temperature * (9 / 5)) + 32
     except Exception as e:
         logger.error("Failed to detect temperature: {}".format(e))
 
 
 def check_relays():
-    global uvb_status, day_status, night_status, heater_status
+    global uvb_status, day_status, night_status, heater_status, bubbler_status
     try:
         if GPIO.input(relay.pin_heater):
             heater_status = 0
@@ -160,6 +165,10 @@ def check_relays():
             night_status = 0
         else:
             night_status = 1
+        if GPIO.input(relay.pin_bubbler):
+            bubbler_status = 0
+        else:
+            bubbler_status = 1
     except Exception as e:
         logger.error("Failed to control relays: {}".format(e))
 
@@ -169,10 +178,11 @@ def temp_status():
     if upload_temps:
         from mySql import insert
         try:
-            insert(datetime.datetime.now(), cycle, season, temp_set, t_hot, uvb_status, day_status,
-                   night_status, heater_status)
+            insert(datetime.datetime.now(), cycle, season, temp_set, t_hot, t_cold, uvb_status, day_status,
+                   night_status, heater_status, bubbler_status)
         except Exception as e:
             logger.error("Failed to insert temperature data: {}".format(e))
-    logger.debug("Current time: {} Cycle: {} Season: {} Temp_Set {} Temp_Read {} UVB {} Day {} Night {} Heat {}  ".
-                 format(datetime.datetime.now(), cycle, season, temp_set, t_hot, uvb_status, day_status,
-                        night_status, heater_status))
+    logger.debug("Current time: {} Cycle: {} Season: {} Temp_Set {} Temp_Hot {} Temp_Cold {} UVB {} Day {} Night {} Heat {} Bubbler {}".
+                 format(datetime.datetime.now(), cycle, season, temp_set, t_hot, t_cold, uvb_status, day_status,
+                        night_status, heater_status, bubbler_status))
+

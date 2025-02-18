@@ -10,7 +10,7 @@ So what makes this one special?
 - Completely contained historical data and reporting through MYSQL and Grafana
 - Very easy to build and easily replaceable parts
 
-Temperature range information based on https://cvm.ncsu.edu/wp-content/uploads/2016/12/Caring-for-your-Bearded-Dragon.pdf#:~:text=Temperature%3A%20Daytime%20maintain%20between%2075,hot%20ends%20of%20the%20enclosure.
+Temperature range information based on [Caring for your Bearded Dragon](https://cvm.ncsu.edu/wp-content/uploads/2016/12/Caring-for-your-Bearded-Dragon.pdf#:~:text=Temperature%3A%20Daytime%20maintain%20between%2075,hot%20ends%20of%20the%20enclosure).
 
 ## Parts list
 
@@ -37,6 +37,18 @@ All prerequisites and needed packages will be installed.
 - gpio
 - i2c
 - spi
+
+## Wiring Diagram
+
+Here is the wiring diagram for the habitat controller:
+
+![Wiring Diagram](wiring_diagram.png)
+
+- **Pin 17**: Standard light
+- **Pin 22**: UVB light
+- **Pin 23**: Night light
+- **Pin 27**: Heater
+- **Temperature sensor (mpc9808)**: Connected to I2C pins (SDA, SCL)
 
 ## Grafana
 

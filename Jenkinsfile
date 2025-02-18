@@ -1,16 +1,28 @@
+@Library("security_stages") _
+
 pipeline {
     agent any
+
+    options {
+        buildDiscarder(logRotator(numToKeepStr: "3", artifactNumToKeepStr: "3"))
+    }
+
     stages {
-        stage('SonarQube analysis') {
+        stage('Setup') { // Install any dependencies you need to perform testing
             steps {
-                withSonarQubeEnv(installationName: 'SonarQube', credentialsId: 'sonarqube') {
-                    sh '''${SONAR_SCANNER} -Dproject.settings=sonar-project.properties'''
+                script {
+                sh """
+                python3 -m venv ./venv
+                . ./venv/bin/activate
+                pip install -r requirements.txt pytest pytest-cov
+                mkdir -p test-reports
+                """
                 }
             }
         }
-        stage("SonarQube quality gate") {
+        stage ("Attempting security stages") {
             steps {
-                waitForQualityGate abortPipeline: true
+                shared()
             }
         }
     }
