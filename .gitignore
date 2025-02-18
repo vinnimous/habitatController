@@ -21,3 +21,8 @@ env.bak/
 venv.bak/
 
 target/
+.coverage
+pytest.ini
+pytest.log
+test-reports/
+logfile.log

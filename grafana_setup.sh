@@ -16,6 +16,7 @@ DASHBOARDS=(
   "grafana_dash_current.json"
   "grafana_dash_historical.json"
 )
+
 create_datasource() {
   sudo cp $DATASOURCES $LOCATION_DATASOURCES
 }
