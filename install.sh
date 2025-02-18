@@ -34,6 +34,37 @@ get_arch() {
   fi
 }
 
+check_swap_size() {
+  current_swap=$(grep CONF_SWAPSIZE /etc/dphys-swapfile | cut -d'=' -f2)
+  if [ "$current_swap" -lt 1024 ]; then
+    echo -e "${GREEN}Increasing swap size to 1024${NC}"
+    sudo sed -i 's/CONF_SWAPSIZE=[0-9]*/CONF_SWAPSIZE=1024/' /etc/dphys-swapfile
+    sudo systemctl restart dphys-swapfile
+  else
+    echo -e "${GREEN}Swap size is sufficient${NC}"
+  fi
+}
+
+increase_swap_size() {
+  sudo sed -i 's/CONF_SWAPSIZE=100/CONF_SWAPSIZE=2048/' /etc/dphys-swapfile
+  sudo systemctl restart dphys-swapfile
+}
+
+check_max_swap_size() {
+  current_max_swap=$(grep CONF_MAXSWAP /etc/dphys-swapfile | cut -d'=' -f2)
+  if [ -z "$current_max_swap" ] || [ "$current_max_swap" -lt 2048 ]; then
+    echo -e "${GREEN}Setting max swap size to 2048${NC}"
+    if grep -q "CONF_MAXSWAP" /etc/dphys-swapfile; then
+      sudo sed -i 's/CONF_MAXSWAP=[0-9]*/CONF_MAXSWAP=2048/' /etc/dphys-swapfile
+    else
+      echo "CONF_MAXSWAP=2048" | sudo tee -a /etc/dphys-swapfile
+    fi
+    sudo systemctl restart dphys-swapfile
+  else
+    echo -e "${GREEN}Max swap size is sufficient${NC}"
+  fi
+}
+
 # Update package lists
 updating() {
   echo -e "${GREEN}Updating libraries${NC}"
@@ -183,6 +214,8 @@ restart() {
 
 # Execute the functions in order
 get_arch
+check_swap_size
+check_max_swap_size
 updating
 install_basics
 install_requirements

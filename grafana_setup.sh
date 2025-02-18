@@ -28,10 +28,5 @@ create_dashboard() {
   sudo cp $DASHSOURCES $LOCATION_DASHBOARDS
 }
 
-configure_grafana_port() {
-  sudo sed -i 's/^;http_port = 3000/http_port = 80/' /etc/grafana/grafana.ini
-}
-
 create_datasource
 create_dashboard
-configure_grafana_port
