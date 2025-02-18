@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# Define colors
+GREEN='\033[0;32m'
+RED='\033[0;31m'
+NC='\033[0m' # No Color
+
 RASP_MOD_A="Raspberry Pi Model A"
 RASP_MOD_B="Raspberry Pi 3 Model B"
 MODEL_FILE="/sys/firmware/devicetree/base/model"
@@ -17,56 +22,56 @@ IS_GRAFANA_RUNNING=false
 
 # Determine Raspberry Pi architecture to select correct packages
 get_arch() {
-  echo "Detecting Raspberry Pi type"
+  echo -e "${GREEN}Detecting Raspberry Pi type${NC}"
   if grep -q "$RASP_MOD_A" "$MODEL_FILE"; then
-    echo "$RASP_MOD_A detected"
+    echo -e "${GREEN}$RASP_MOD_A detected${NC}"
     IS_TYPE_A=true
   elif grep -q "$RASP_MOD_B" "$MODEL_FILE"; then
-    echo "$RASP_MOD_B detected"
+    echo -e "${GREEN}$RASP_MOD_B detected${NC}"
     IS_TYPE_B=true
   else
-    echo "Undetected Raspberry Pi Model"
+    echo -e "${RED}Undetected Raspberry Pi Model${NC}"
   fi
 }
 
 # Update package lists
 updating() {
-  echo "Updating libraries"
+  echo -e "${GREEN}Updating libraries${NC}"
   sudo apt-get update -y
 }
 
 # Install basic build tools and Python dependencies
 install_basics() {
-  echo "Installing some basic build tools"
+  echo -e "${GREEN}Installing some basic build tools${NC}"
   sudo apt-get install -y build-essential python3-dev python3-smbus python3-pip python3-venv
 }
 
 # Set up Python virtual environment and install requirements
 install_requirements() {
-  echo "Setting up Python virtual environment"
+  echo -e "${GREEN}Setting up Python virtual environment${NC}"
   python3 -m venv venv  # Create a virtual environment named 'venv'
   source venv/bin/activate  # Activate the virtual environment
-  echo "Installing requirements in the virtual environment"
+  echo -e "${GREEN}Installing requirements in the virtual environment${NC}"
   pip install -r requirements.txt  # Install packages in the virtual environment
   deactivate  # Deactivate the virtual environment
 }
 
 # Install MySQL and related packages
 install_mysql() {
-  echo "Installing items for MySQL"
+  echo -e "${GREEN}Installing items for MySQL${NC}"
   sudo apt-get install -y apt-transport-https software-properties-common wget mariadb-server adduser libfontconfig1
   sudo apt-get install -y python3-mysqldb expect
 }
 
 # Select which Grafana package to install based on Raspberry Pi architecture
 install_grafana() {
-  echo "Installing Grafana"
+  echo -e "${GREEN}Installing Grafana${NC}"
   if $IS_TYPE_B; then
     grafana_apt
   elif $IS_TYPE_A; then
     grafana_deb
   else
-    echo "$ERROR_MOD_NOT_FOUND"
+    echo -e "${RED}$ERROR_MOD_NOT_FOUND${NC}"
   fi
 }
 
@@ -86,7 +91,7 @@ grafana_apt() {
 
 # Start Grafana service
 start_grafana() {
-  echo "Starting Grafana"
+  echo -e "${GREEN}Starting Grafana${NC}"
   if $IS_TYPE_B; then
     sudo /bin/systemctl enable grafana-server
     sudo /bin/systemctl start grafana-server &
@@ -94,23 +99,23 @@ start_grafana() {
     sudo service grafana-server start &
     sudo update-rc.d grafana-server defaults
   else
-    echo "$ERROR_MOD_NOT_FOUND"
+    echo -e "${RED}$ERROR_MOD_NOT_FOUND${NC}"
   fi
 }
 
 # Check if Grafana is running
 check_grafana() {
   if systemctl is-active grafana-server | grep -q "$GRAFANA_RUNNING"; then
-    echo "Grafana is currently running"
+    echo -e "${GREEN}Grafana is currently running${NC}"
     IS_GRAFANA_RUNNING=true
   else
-    echo "Grafana may have failed, please confirm manually"
+    echo -e "${RED}Grafana may have failed, please confirm manually${NC}"
   fi
 }
 
 # Set up MySQL with secure installation
 setup_mysql() {
-  echo "Setting up MySQL"
+  echo -e "${GREEN}Setting up MySQL${NC}"
   expect <<EOF
 spawn sudo mysql_secure_installation
 
@@ -140,15 +145,15 @@ EOF
 
 # Create a cron job to run the main script at reboot
 create_cron() {
-  echo "Trying to create a cronjob"
+  echo -e "${GREEN}Trying to create a cronjob${NC}"
   (
     crontab -l
     echo "$CRONJOB"
   ) | awk '!x[$0]++' | crontab -
   if crontab -l | grep -q "$CRONJOB"; then
-    echo "Successfully created cronjob"
+    echo -e "${GREEN}Successfully created cronjob${NC}"
   else
-    echo "Cronjob creation failed, attempting schedule"
+    echo -e "${RED}Cronjob creation failed, attempting schedule${NC}"
     create_schedule
   fi
 }
@@ -167,7 +172,7 @@ configure_grafana() {
 
 # Clean up and restart the system
 restart() {
-  echo "Removing leftovers and restarting"
+  echo -e "${GREEN}Removing leftovers and restarting${NC}"
   sudo apt autoremove -y
   sudo shutdown -r
 }
