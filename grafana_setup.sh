@@ -6,8 +6,8 @@ TOKEN="Authorization: Bearer "
 CONTENT="Content-Type: application/json"
 ACCEPT="Accept: application/json"
 
-DATASOURCES="grafana_datasources.yml"
-DASHSOURCES="grafana_dashboards.yml"
+DATASOURCES="grafana_datasources.yaml"
+DASHSOURCES="grafana_dashboards.yaml"
 
 LOCATION_DATASOURCES="/etc/grafana/provisioning/datasources/"
 LOCATION_DASHBOARDS="/etc/grafana/provisioning/dashboards/"
@@ -28,5 +28,10 @@ create_dashboard() {
   sudo cp $DASHSOURCES $LOCATION_DASHBOARDS
 }
 
+configure_grafana_port() {
+  sudo sed -i 's/^;http_port = 3000/http_port = 80/' /etc/grafana/grafana.ini
+}
+
 create_datasource
 create_dashboard
+configure_grafana_port

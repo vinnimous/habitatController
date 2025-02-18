@@ -19,7 +19,7 @@
   "links": [],
   "panels": [
     {
-      "datasource": null,
+      "datasource": "MYSQL",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -141,7 +141,7 @@
           ]
         }
       ],
-      "title": "Panel Title",
+      "title": "Historical Temperature",
       "type": "timeseries"
     }
   ],

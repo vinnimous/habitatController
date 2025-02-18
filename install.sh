@@ -86,8 +86,6 @@ grafana_apt() {
   sudo mkdir -p /etc/apt/keyrings/
   wget -q -O - https://apt.grafana.com/gpg.key | gpg --dearmor | sudo tee /etc/apt/keyrings/grafana.gpg > /dev/null
   echo "deb [signed-by=/etc/apt/keyrings/grafana.gpg] https://apt.grafana.com stable main" | sudo tee /etc/apt/sources.list.d/grafana.list
-  # wget -q -O - https://packages.grafana.com/gpg.key | sudo apt-key add -
-  # echo "deb https://packages.grafana.com/oss/deb stable main" | sudo tee -a /etc/apt/sources.list.d/grafana.list
   sudo apt-get update -y
   sudo apt-get install -y grafana
 }
@@ -126,24 +124,27 @@ spawn sudo mysql_secure_installation
 expect "Enter current password for root (enter for none):"
 send "\r"  # No password for the current root user
 
-expect "Set root password?"
-send "N\r"  # No, root password left empty
+expect "Switch to unix_socket authentication"
+send "n\r"  # No
+
+expect "Change the root password?"
+send "n\r"  # No
 
 expect "Remove anonymous users?"
-send "Y\r"  # Yes, remove anonymous users
+send "y\r"  # Yes
 
 expect "Disallow root login remotely?"
-send "N\r"  # No, allow root login remotely
+send "n\r"  # No
 
 expect "Remove test database and access to it?"
-send "Y\r"  # Yes, remove the test database
+send "y\r"  # Yes
 
 expect "Reload privilege tables now?"
-send "Y\r"  # Yes, reload the privilege tables
+send "y\r"  # Yes
 
 expect eof
 EOF
-  sudo mysql -u root -p <createDB.sql
+  sudo mysql -u root -e "source createDB.sql"
 }
 
 # Create a cron job to run the main script at reboot
