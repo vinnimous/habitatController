@@ -174,7 +174,7 @@ configure_grafana() {
 restart() {
   echo -e "${GREEN}Removing leftovers and restarting${NC}"
   sudo apt autoremove -y
-  sudo shutdown -r
+  sudo shutdown -r now
 }
 
 # Execute the functions in order
