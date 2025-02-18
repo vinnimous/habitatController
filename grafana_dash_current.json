@@ -26,7 +26,6 @@
   "graphTooltip": 0,
   "id": 1,
   "links": [],
-  "liveNow": false,
   "panels": [
     {
       "datasource": "MYSQL",
@@ -76,6 +75,8 @@
       },
       "id": 2,
       "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
@@ -86,15 +87,17 @@
         },
         "showThresholdLabels": false,
         "showThresholdMarkers": true,
+        "sizing": "auto",
         "text": {}
       },
-      "pluginVersion": "8.5.5",
+      "pluginVersion": "11.5.1",
       "targets": [
         {
+          "editorMode": "code",
           "format": "time_series",
           "group": [],
           "metricColumn": "none",
-          "rawQuery": false,
+          "rawQuery": true,
           "rawSql": "SELECT\n  DATE AS \"time\",\n  TEMP_ACT_H\nFROM habitatHistoryTable\nWHERE\n  $__timeFilter(DATE)\nORDER BY DATE",
           "refId": "A",
           "select": [
@@ -107,6 +110,23 @@
               }
             ]
           ],
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          },
           "table": "habitatHistoryTable",
           "timeColumn": "DATE",
           "timeColumnType": "timestamp",
@@ -119,7 +139,102 @@
           ]
         }
       ],
-      "title": "Current Temperature",
+      "title": "Current Hot Side Temperature",
+      "type": "gauge"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "P942E7CBEF3A365EB"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "max": 115,
+          "min": 65,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "dark-red",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 65
+              },
+              {
+                "color": "#EAB839",
+                "value": 75.0002
+              },
+              {
+                "color": "green",
+                "value": 90
+              },
+              {
+                "color": "orange",
+                "value": 111
+              }
+            ]
+          },
+          "unit": "fahrenheit"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 0
+      },
+      "id": 7,
+      "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "sizing": "auto"
+      },
+      "pluginVersion": "11.5.1",
+      "targets": [
+        {
+          "dataset": "habitatHistoryDB",
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  DATE AS \"time\",\n  TEMP_ACT_C\nFROM habitatHistoryTable\nWHERE\n  $__timeFilter(DATE)\nORDER BY DATE",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Current Cold Side Temperature",
       "type": "gauge"
     },
     {
@@ -149,13 +264,15 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 8,
-        "w": 12,
+        "h": 6,
+        "w": 24,
         "x": 0,
         "y": 9
       },
       "id": 6,
       "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
@@ -166,9 +283,10 @@
         },
         "showThresholdLabels": false,
         "showThresholdMarkers": true,
+        "sizing": "auto",
         "text": {}
       },
-      "pluginVersion": "8.5.5",
+      "pluginVersion": "11.5.1",
       "targets": [
         {
           "format": "time_series",
@@ -203,9 +321,9 @@
       "type": "gauge"
     }
   ],
+  "preload": false,
   "refresh": "5s",
-  "schemaVersion": 36,
-  "style": "dark",
+  "schemaVersion": 40,
   "tags": [],
   "templating": {
     "list": []
@@ -218,6 +336,6 @@
   "timezone": "utc",
   "title": "Default",
   "uid": "eCpkqXzRz",
-  "version": 5,
+  "version": 1,
   "weekStart": ""
 }
