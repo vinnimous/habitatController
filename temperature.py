@@ -21,6 +21,7 @@ heater_status = 0
 uvb_status = 0
 day_status = 0
 night_status = 0
+bubbler_status = 0
 
 season = "unknown"
 
