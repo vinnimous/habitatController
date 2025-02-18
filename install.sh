@@ -44,6 +44,7 @@ updating() {
 install_basics() {
   echo -e "${GREEN}Installing some basic build tools${NC}"
   sudo apt-get install -y build-essential python3-dev python3-smbus python3-pip python3-venv
+  sudo apt-get autoremove -y
 }
 
 # Set up Python virtual environment and install requirements
@@ -85,7 +86,7 @@ grafana_deb() {
 grafana_apt() {
   wget -q -O - https://packages.grafana.com/gpg.key | sudo apt-key add -
   echo "deb https://packages.grafana.com/oss/deb stable main" | sudo tee -a /etc/apt/sources.list.d/grafana.list
-  sudo apt-get update
+  sudo apt-get update -y
   sudo apt-get install -y grafana
 }
 
